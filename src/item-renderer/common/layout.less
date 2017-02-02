@@ -1,0 +1,74 @@
+/*
+ Copyright 2016
+ Pilyugin Alexey
+
+ This file is part of Voice ART.
+
+ Voice ART is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Voice ART is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Voice ART.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@import "constants";
+
+@button-outline-offset: 4px;
+@button-text-color: #fff;
+
+hr {
+  margin-top: @default-indent;
+  margin-bottom: @default-indent;
+}
+
+.cg-item-rejoinder {
+  margin-left: @default-indent;
+  display: inline-block;
+
+  &:focus {
+    outline: 1px dotted black;
+  }
+}
+
+.is-mouse-focused:focus {
+  outline: none;
+}
+
+.cg-item-submit-btn {
+  position: relative;
+  &:focus {
+    outline: none;
+  }
+  &:focus:not(.is-mouse-focused):after {
+    content: "";
+    position: absolute;
+    display: block;
+    border: @button-text-color dotted 1px;
+    top: @button-outline-offset;
+    bottom: @button-outline-offset;
+    left: @button-outline-offset;
+    right: @button-outline-offset;
+  }
+}
+
+.cg-item-section {
+  margin-top: @default-indent;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &,
+  .cg-item-content-unit {
+    &:not(.is-mouse-focused):focus {
+      outline: 1px dotted black;
+    }
+  }
+}

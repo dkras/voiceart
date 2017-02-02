@@ -1,0 +1,243 @@
+/*
+ Copyright 2016
+ Pilyugin Alexey
+
+ This file is part of Voice ART.
+
+ Voice ART is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Voice ART is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Voice ART.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@content-width: 340px;
+@slider-width: 140px;
+@toggle-size: 25px;
+@toggle-width: 2*@toggle-size;
+@toggle-border: 1px;
+@check-button-size: 30px;
+@theme-color: #2196F3;
+@button-text-color: #fff;
+@reset-color: rgb(246, 77, 74);
+@button-outline-offset: 2px;
+
+.cg-screen-readers-only {
+  position: absolute;
+  clip: rect(1px 1px 1px 1px); /* for Internet Explorer */
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  left: -9999px;
+}
+
+.cg-voice-sf-dialog {
+  * {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .cg-dialog-content button,
+  .cg-dialog-buttons button {
+    position: relative;
+    border: none;
+    background-color: @theme-color;
+    color: @button-text-color;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+
+    &:focus {
+      outline: none;
+    }
+    &:focus:not(.is-mouse-focused):after {
+      content: "";
+      position: absolute;
+      display: block;
+      border: @button-text-color dotted 1px;
+      top: @button-outline-offset;
+      bottom: @button-outline-offset;
+      left: @button-outline-offset;
+      right: @button-outline-offset;
+    }
+    &:hover {
+      background-color: darken(@theme-color, 10%);
+    }
+    &:active {
+      background-color: darken(@theme-color, 20%);
+    }
+  }
+
+  .cg-dialog-buttons button {
+    text-transform: uppercase;
+    padding: 5px 15px;
+    //border-radius: 3px;
+  }
+  button.cg-voice-sf-reset-defaults {
+    padding: 3px 15px;
+    float: right;
+    background-color: @reset-color;
+    &:hover {
+      background-color: darken(@reset-color, 10%);
+    }
+    &:active {
+      background-color: darken(@reset-color, 20%);
+    }
+  }
+}
+
+.cg-voice-sf {
+
+  input.cg-toggle {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    width: @toggle-width;
+    height: @toggle-size;
+    background-color: #dddddd;
+    border-radius: @toggle-size;
+    margin: 0;
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  input.cg-toggle:focus:not(.is-mouse-focused) {
+    outline: dotted black 1px;
+    outline-offset: 2px;
+  }
+
+  input.cg-toggle:before,
+  input.cg-toggle:after {
+    display: block;
+    position: absolute;
+    top: @toggle-border;
+    left: @toggle-border;
+    bottom: @toggle-border;
+    content: "";
+    width: auto;
+    height: auto;
+    .transform(none);
+    border: none;
+    margin: 0;
+  }
+
+  input.cg-toggle:before {
+    right: @toggle-border;
+    background-color: #f1f1f1;
+    border-radius: @toggle-size;
+    transition: background 0.4s;
+  }
+
+  input.cg-toggle:after {
+    width: @toggle-size - 2*@toggle-border;
+    background-color: #fff;
+    border-radius: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: margin 0.4s;
+  }
+
+  input.cg-toggle:checked:before {
+    background-color: #8ce196;
+  }
+
+  input.cg-toggle:checked:after {
+    margin-left: @toggle-width - @toggle-size;
+  }
+
+  .cg-slider-progress,
+  .cg-slider-handle,
+  .cg-slider-handle:hover:after,
+  .cg-slider-handle-tooltip {
+    background-color: @theme-color;
+  }
+  .cg-slider-handle:focus:after {
+    background-color: fadeout(@theme-color, 70%);
+  }
+  .cg-slider-handle-tooltip:after {
+    border-top-color: @theme-color;
+  }
+}
+
+.cg-voice-sf-speech-speed input {
+  width: 50px;
+  text-align: center;
+}
+
+.cg-voice-sf-row {
+  margin: 10px 0;
+  width: @content-width;
+
+  * {
+    vertical-align: middle;
+  }
+
+  label {
+    display: inline-block;
+    margin: 0;
+    width: calc(~'100%' - @slider-width);
+  }
+  .cg-voice-sf-lang_select{
+    width:@slider-width;
+  }
+
+  .cg-voice-sf-label-text {
+    display: inline-block;
+
+    font-size: 18px;
+  }
+
+  .cg-voice-sf-description {
+    text-align: justify;
+  }
+
+  .cg-voice-sf-slider-container {
+    display: inline-block;
+    width: @slider-width;
+  }
+}
+
+.cg-voice-sf-speech-speed {
+  .cg-voice-sf-speech-speed-check {
+    width: @check-button-size;
+    height: @check-button-size;
+    margin-left: 10px;
+    border-radius: 50%;
+    background: url("volume-high.svg") no-repeat center;
+    background-size: 2*round(@check-button-size/3);
+
+    &:focus:not(.is-mouse-focused):after {
+      border-radius: 50%;
+    }
+  }
+  label {
+    width: calc(~'100%' - (@slider-width + @check-button-size + 10px));
+  }
+}
+
+.cg-voice-sf-use-browser label,
+.cg-voice-sf-allow-without-prefix label,
+.cg-voice-sf-advanced-mode label {
+  width: calc(~'100%' - @toggle-width);
+}
+
+.transform(@val) {
+  -moz-transform: @val;
+  -ms-transform: @val;
+  -webkit-transform: @val;
+  -o-transform: @val;
+  transform: @val;
+}

@@ -1,0 +1,79 @@
+{
+  "sections": {
+    "units": [
+      {
+        "type": "text",
+        "value": "Peaks and valleys on a polynomial "
+      },
+      {
+        "type": "widget",
+        "value": {
+          "type": "dropdown",
+          "options": [
+            {
+              "value": "a",
+              "display": "graph",
+              "speech": "graph"
+            },
+            {
+              "value": "b",
+              "display": "chart",
+              "speech": "chart"
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "value": " are called "
+      },
+      {
+        "type": "widget",
+        "value": {
+          "type": "dropdown",
+          "options": [
+            {
+              "value": "a",
+              "display": "odd",
+              "speech": "odd"
+            },
+            {
+              "value": "b",
+              "display": "even",
+              "speech": "even"
+            },
+            {
+              "value": "c",
+              "display": "turning",
+              "speech": "turning"
+            },
+            {
+              "value": "d",
+              "display": "decreasing",
+              "speech": "decreasing"
+            },
+            {
+              "value": "e",
+              "display": "increasing",
+              "speech": "increasing"
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "value": " points."
+      }
+    ]
+  },
+  "correct": [
+    {
+      "method": "string",
+      "value": "a"
+    },
+    {
+      "method": "string",
+      "value": "c"
+    }
+  ]
+}

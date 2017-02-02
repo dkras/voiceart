@@ -1,0 +1,71 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.top-menu {
+    height: 50px;
+    background-color: #3883fa;
+    padding: 0 5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.label-text {
+    color: white;
+}
+
+#sample-select {
+    margin: 10px;
+}
+
+#show-editor {
+    margin-left: 5px;
+    background-color: white;
+    border-radius: 3px;
+}
+
+#show-editor:after {
+    margin-right: 0;
+}
+
+.split-pane {
+    height: calc(100% - 50px) !important;
+    border-bottom: 1px solid #3883fa;
+}
+
+#jsoneditor {
+    min-width: 300px;
+    height: 100%;
+}
+
+#jsoneditor .jsoneditor {
+    border: none;
+}
+
+.jsoneditor-poweredBy {
+    display: none;
+}
+
+.split-pane-divider {
+    width: 8px;
+    background: #3883fa url("dots-vertical.svg") no-repeat center;
+}
+
+#preview {
+    margin-left: 8px; /* Same as divider width */
+}
+
+#container {
+    max-width: 800px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ui-helper-hidden-accessible {
+    display: none;
+}

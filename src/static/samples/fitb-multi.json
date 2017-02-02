@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "units": [
+      "Write the molecular formula of glycine, an amino acid present in proteins. The color codes are: gray (carbon), blue (nitrogen), red (oxygen), and yellow (hydrogen). ",
+      {
+        "type": "html",
+        "value": "(Type your answer using the notation CH4 for CH<sub>4</sub>.)<br>"
+      },
+      {
+        "type": "widget",
+        "value": {
+          "type": "fitb",
+          "align": "center",
+          "width": "150",
+          "placeholder": "Type formula here"
+        }
+      },
+      {
+        "type": "widget",
+        "value": {
+          "type": "fitb",
+          "align": "center",
+          "width": "150",
+          "placeholder": "Type formula here"
+        }
+      },
+      {
+        "type": "image",
+        "value": {
+          "align": "center",
+          "link": "images/glycine.png"
+        }
+      }
+    ]
+  },
+  "correct": [
+    {
+      "method": "string",
+      "value": "C2H5NO2"
+    },
+    {
+      "method": "string",
+      "value": "C2H5NO2"
+    }
+  ]
+}

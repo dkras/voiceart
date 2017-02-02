@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "units": [
+      "The area of an isosceles triangle having base 2 cm and the length of one of the equal sides 4 cm, is",
+      {
+        "type": "widget",
+        "value": {
+          "type": "mc",
+          "subtype": "radio",
+          "randomOrder": true,
+          "choices": [
+            {
+              "value": "a",
+              "display": {
+                "type": "image",
+                "value": "images/area-a.png"
+              },
+              "speech": "square root of 15 square centimeters"
+            },
+            {
+              "value": "b",
+              "display": {
+                "type": "image",
+                "value": "images/area-b.png"
+              },
+              "speech": "square root of 15 divided by 2 square centimeters"
+            },
+            {
+              "value": "c",
+              "display": {
+                "type": "image",
+                "value": "images/area-c.png"
+              },
+              "speech": "2 square root of 15 square centimeters"
+            },
+            {
+              "value": "d",
+              "display": {
+                "type": "image",
+                "value": "images/area-d.png"
+              },
+              "speech": "4 square root of 15 square centimeters"
+            }
+          ]
+        }
+      }
+    ],
+    "speech": "The area of an isosceles triangle having base 2 cm and the length of one of the equal sides 4 cm, is"
+  },
+  "correct": {
+    "method": "string",
+    "value": "a"
+  }
+}

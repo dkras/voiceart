@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "units": [
+      "The quick brown fox...",
+      {
+        "type": "widget",
+        "value": {
+          "type": "essay"
+        }
+      }
+    ],
+    "speech": "The quick brown fox... Please continue the phrase."
+  },
+  "correct": {
+    "method": "string",
+    "value": "jumps over the lazy dog"
+  }
+}

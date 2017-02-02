@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <title>Test page</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/test-page.css">
+
+    <link rel="stylesheet" type="text/css" href="libs/jsoneditor/dist/jsoneditor.min.css">
+    <script type="text/javascript" src="libs/jsoneditor/dist/jsoneditor.min.js"></script>
+
+    <script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="libs/jquery-ui/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="libs/split-pane/split-pane.css">
+    <script type="text/javascript" src="libs/split-pane/split-pane.min.js"></script>
+
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/ItemRenderer.js"></script>
+    <script type="text/javascript" src="js/VoiceController.js"></script>
+    <script type="text/javascript" src="js/VoiceCommander.js"></script>
+
+</head>
+<body>
+
+<div class="top-menu">
+    <label>
+        <span class="label-text">Samples: </span>
+        <select id="sample-select"></select>
+    </label>
+
+    <label>
+        <span class="label-text">Show Item Editor:</span>
+        <input id="show-editor" type="checkbox">
+    </label>
+</div>
+<div class="split-pane fixed-left">
+    <div class="split-pane-component" id="jsoneditor"></div>
+    <div class="split-pane-divider" id="pane-divider"></div>
+    <div class="split-pane-component" id="preview">
+        <div id="container"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var DEFAULT_EDITOR_PERCENTAGE_WIDTH = 50;
+        var DEFAULT_EDITOR_VISIBILITY = false;
+        var DEFAULT_MODE = 'tree';
+        var SAMPLES_ROOT = 'samples/';
+        var SAMPLES_LIST_URL = 'samples.json';
+        var VISIBILITY_KEY = 'cg-item-editor-visibility';
+        var WIDTH_KEY = 'cg-item-editor-width';
+        var MODE = 'cg-item-editor-mode';
+
+        var voiceController;
+        /*window.vc = new VoiceArt['voice-commander']({
+            customCommands: ['Vicki menu', 'Vicki next question', 'Vicki stop'],
+            alternatives: [
+                {
+                    phrase: 'Vicki',
+                    alts: [
+                        'vk',
+                        'viki',
+                        'freaky',
+                        'video',
+                        'wiki',
+                        'vicky',
+                        'vicki',
+                        'ricky',
+                        'ricki',
+                        'rikki',
+                        'avicii',
+                        'nikki',
+                        'nicki',
+                        'we can',
+                        'they can',
+                        'richard'
+                    ]
+                },
+                {
+                    phrase: 'stop',
+                    alts: [
+                        'stuff',
+                        'dot'
+                    ]
+                }
+            ]
+        });
+        window.vc.on('command', function(cmd){
+            console.log(cmd);
+            if(cmd === 'stop'){
+                window.vc.stop();
+            }
+        });*/
+        var $sampleSelect = $('#sample-select');
+        var $showEditor = $('#show-editor');
+        var $splitPane = $('.split-pane');
+        var $editor = $('#jsoneditor');
+        var $preview = $('#preview');
+        var $divider = $('#pane-divider');
+
+        var editor;
+        var editorVisibility;
+
+        var throttleRender = throttle(initItem, 3000);
+
+        init();
+
+        function init() {
+            var showEditor = localStorage.getItem(VISIBILITY_KEY) === 'true';
+            setEditorVisibility(showEditor);
+            $showEditor[0].checked = showEditor;
+            $showEditor.on('change', function () {
+                localStorage.setItem(VISIBILITY_KEY, this.checked);
+                setEditorVisibility(this.checked);
+            });
+
+            $splitPane.
+                    on('splitpaneresize', function () {
+                        if (editorVisibility) {
+                            var percentageWidth = Math.round(($editor.width() / $splitPane.width()) * 100);
+                            localStorage.setItem(WIDTH_KEY, percentageWidth);
+                        }
+                    }).
+                    splitPane();
+
+            var mode = localStorage.getItem(MODE) || DEFAULT_MODE;
+            editor = new JSONEditor($editor[0], {
+                name: 'config',
+                mode: mode,
+                modes: ['code', 'tree'],
+                onChange: function () {
+                    try {
+                        var config = editor.get();
+                        throttleRender(config);
+                    }
+                    catch (e) {
+                        if (e.message.indexOf('Parse error') != -1) {
+                            console.warn('Invalid config JSON.');
+                        }
+                        else {
+                            console.error(e);
+                        }
+                    }
+                },
+                onModeChange: function (newMode) {
+                    localStorage.setItem(MODE, newMode);
+                }
+            });
+
+
+            $sampleSelect.on('change', function () {
+                loadSample($sampleSelect.val());
+            });
+
+            var queryObject = getUrlVars();
+            if (queryObject.pack) {
+                SAMPLES_ROOT += queryObject.pack + '/';
+            }
+
+            $.ajax({
+                url: SAMPLES_ROOT + SAMPLES_LIST_URL,
+                dataType: 'json'
+            }).done(function (samples) {
+                populateSelect(samples);
+                loadSample($sampleSelect.val());
+            });
+        }
+
+        function setEditorVisibility(visible) {
+            if (typeof visible !== 'boolean') {
+                visible = DEFAULT_EDITOR_VISIBILITY;
+            }
+            editorVisibility = visible;
+
+            if (visible) {
+                $editor.show();
+                $divider.show();
+                var editorWidth = localStorage.getItem(WIDTH_KEY) || DEFAULT_EDITOR_PERCENTAGE_WIDTH;
+                setEditorWidth(editorWidth);
+            }
+            else {
+                $editor.hide();
+                $divider.hide();
+                setEditorWidth(0);
+            }
+        }
+
+        function setEditorWidth(percentWidth) {
+            $editor.width(percentWidth + '%');
+            $divider.css('left', percentWidth + '%');
+            $preview.css('left', percentWidth + '%');
+        }
+
+        function populateSelect(samples) {
+            for (var key in samples) {
+                if (!samples.hasOwnProperty(key))
+                    continue;
+                var sample = samples[key];
+                $('<option>' + key + '</option>').
+                        attr('value', sample).
+                        appendTo($sampleSelect);
+            }
+        }
+
+        function loadSample(sampleUrl) {
+            $.ajax({
+                url: SAMPLES_ROOT + sampleUrl,
+                dataType: 'json'
+            }).done(function (config) {
+                editor.set(config);
+                initItem(config);
+            });
+        }
+
+        function initItem(config) {
+            if (voiceController) {
+                voiceController.destroy();
+            }
+            var container = document.getElementById('container');
+            container.innerHTML = '';
+            var item = new VoiceArt.ItemRenderer(container, config);
+            console.log(item);
+            item.on(VoiceArt.ItemRenderer.EVENTS.SUBMIT, function (answer) {
+                console.log('Answer submitted:', answer);
+            });
+            item.on(VoiceArt.ItemRenderer.EVENTS.RESPONSE_RECEIVED, function (response) {
+                console.log('Response received:', response);
+            });
+            voiceController = new VoiceArt.VoiceController(container, {
+                panelContainer: $preview[0],
+                maxNoSpeechErrors: 3,
+                context: 'cg',
+                ready: function () {
+//                        voiceController.start();
+                }
+            });
+        }
+
+        function throttle(func, ms) {
+
+            var isThrottled = false,
+                    savedArgs,
+                    savedThis;
+
+            function wrapper() {
+
+                if (isThrottled) { // (2)
+                    savedArgs = arguments;
+                    savedThis = this;
+                    return;
+                }
+
+                func.apply(this, arguments); // (1)
+
+                isThrottled = true;
+
+                setTimeout(function () {
+                    isThrottled = false; // (3)
+                    if (savedArgs) {
+                        wrapper.apply(savedThis, savedArgs);
+                        savedArgs = savedThis = null;
+                    }
+                }, ms);
+            }
+
+            return wrapper;
+        }
+
+        function getUrlVars() {
+            var vars = {}, hash;
+            var hashes = window.location.search.slice(window.location.search.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                if (hashes[i]) {
+                    hash = hashes[i].split('=');
+                    vars[hash[0]] = hash[1];
+                }
+            }
+            return vars;
+        }
+
+    });
+</script>
+</body>
+</html>

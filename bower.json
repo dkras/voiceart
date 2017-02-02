@@ -1,0 +1,25 @@
+{
+  "name": "voice-pt",
+  "description": "",
+  "main": "src/index.js",
+  "authors": [
+    "Alexey Pilyugin <pilyugin@competentum.ru>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jsoneditor": "~5.1.4",
+    "split-pane": "~0.8.0",
+    "jquery-ui": "^1.12.0"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "sections": [
+    {
+      "units": [
+        {
+          "type": "text",
+          "value": "Peaks and valleys on a polynomial "
+        },
+        {
+          "type": "widget",
+          "value": {
+            "type": "dropdown",
+            "options": [
+              {
+                "value": "a",
+                "display": "graph",
+                "speech": "graph"
+              },
+              {
+                "value": "b",
+                "display": "chart",
+                "speech": "chart"
+              }
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "value": " are called "
+        },
+        {
+          "type": "widget",
+          "value": {
+            "type": "dropdown",
+            "options": [
+              {
+                "value": "a",
+                "display": "odd",
+                "speech": "odd"
+              },
+              {
+                "value": "b",
+                "display": "even",
+                "speech": "even"
+              },
+              {
+                "value": "c",
+                "display": "turning",
+                "speech": "turning"
+              },
+              {
+                "value": "d",
+                "display": "decreasing",
+                "speech": "decreasing"
+              },
+              {
+                "value": "e",
+                "display": "increasing",
+                "speech": "increasing"
+              }
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "value": " points."
+        }
+      ]
+    },
+    {
+      "units": [
+        "Choose two colors of the opposite ends of the rainbow spectrum.",
+        {
+          "type": "widget",
+          "value": {
+            "type": "mc",
+            "subtype": "checkbox",
+            "randomOrder": true,
+            "choices": [
+              {
+                "value": "a",
+                "display": "Yellow",
+                "speech": "Yellow"
+              },
+              {
+                "value": "b",
+                "display": "Orange",
+                "speech": "Orange"
+              },
+              {
+                "value": "c",
+                "display": "Violet",
+                "speech": "Violet"
+              },
+              {
+                "value": "d",
+                "display": "Green",
+                "speech": "Green"
+              },
+              {
+                "value": "e",
+                "display": "Blue",
+                "speech": "Blue"
+              },
+              {
+                "value": "f",
+                "display": "Red",
+                "speech": "Red"
+              },
+              {
+                "value": "g",
+                "display": "Indigo",
+                "speech": "Indigo"
+              }
+            ]
+          }
+        }
+      ],
+      "speech": "Which two colors of the opposite ends of the rainbow spectrum?"
+    }
+  ],
+  "correct": [
+    {
+      "method": "string",
+      "value": "a"
+    },
+    {
+      "method": "string",
+      "value": "c"
+    },
+    {
+      "method": "array",
+      "value": [
+        "c",
+        "f"
+      ]
+    }
+  ]
+}

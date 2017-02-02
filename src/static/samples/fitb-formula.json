@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "units": [
+      "Simplify ",
+      {
+        "type": "mathml",
+        "value": "<math><msqrt><mrow><mn>75</mn></mrow></msqrt></math>"
+      },
+      {
+        "type": "html",
+        "value": "<br>"
+      },
+      {
+        "type": "widget",
+        "value": {
+          "type": "fitb",
+          "subtype": "math",
+          "align": "center",
+          "width": "150",
+          "placeholder": "Type response here"
+        }
+      }
+    ]
+  },
+  "correct": {
+    "method": "string",
+    "value": ["5\\sqrt{3}", "5\\sqrt3"]
+  }
+}

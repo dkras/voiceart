@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "units": [
+      "Who was the second president of the USA?",
+      {
+        "type": "widget",
+        "value": {
+          "type": "mc",
+          "subtype": "radio",
+          "randomOrder": false,
+          "choices": [
+            {
+              "alternatives": [
+                "Bill",
+                "Clinton"
+              ],
+              "display": "Bill Clinton",
+              "speech": "Bill Clinton",
+              "value": "a"
+            },
+            {
+              "alternatives": [
+                "John",
+                "Adams"
+              ],
+              "display": "John Adams",
+              "speech": "John Adams",
+              "value": "b"
+            },
+            {
+              "alternatives": [
+                "Andrew",
+                "Jackson"
+              ],
+              "display": "Andrew Jackson",
+              "speech": "Andrew Jackson",
+              "value": "c"
+            },
+            {
+              "alternatives": [
+                "James",
+                "Madison"
+              ],
+              "display": "James Madison",
+              "speech": "James Madison",
+              "value": "d"
+            }
+          ]
+        }
+      }
+    ],
+    "speech": "Who was the second president of the USA?"
+  },
+  "correct": {
+    "method": "string",
+    "value": "b"
+  }
+}

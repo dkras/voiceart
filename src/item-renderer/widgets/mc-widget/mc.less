@@ -1,0 +1,167 @@
+/*
+ Copyright 2016
+ Pilyugin Alexey
+
+ This file is part of Voice ART.
+
+ Voice ART is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Voice ART is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Voice ART.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@import "../../common/constants";
+
+.mc-choices {
+  padding-left: @default-indent;
+  padding-right: @default-indent;
+
+  *:before,
+  *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  input[type="radio"],
+  input[type="checkbox"] {
+    margin: 0 4px 0 0;
+    vertical-align: middle;
+    &:focus {
+      outline: none;
+    }
+    &:after,
+    &:before {
+      left: 0;
+      top: 0;
+    }
+  }
+  input[type="checkbox"] {
+    &:before {
+      left: 6px;
+    }
+  }
+
+  // styles from bootstrap
+  /*
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin: 0;
+      margin-right: 4px;
+      position: relative;
+      vertical-align: middle;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+      border: none;
+
+      &:after,
+      &:before {
+        content: "";
+        position: relative;
+        left: 0;
+        top: 0;
+        display: block;
+        width: 18px;
+        height: 18px;
+        //border-radius: 50%;
+        -webkit-transition: 240ms;
+        -o-transition: 240ms;
+        transition: 240ms;
+      }
+
+      &:after {
+        border: 2px solid #666666;
+      }
+    }
+
+    input[type="checkbox"] {
+
+    }
+
+    input[type="radio"] {
+
+      &:after,
+      &:before {
+        border-radius: 50%;
+      }
+
+      &:after {
+        border: 2px solid #666666;
+      }
+      &:before {
+        position: absolute;
+        background-color: #2196f3;
+        -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+        -o-transform: scale(0);
+        transform: scale(0);
+      }
+
+      &:checked:before {
+        -webkit-transform: scale(.5);
+        -ms-transform: scale(.5);
+        -o-transform: scale(.5);
+        transform: scale(.5);
+      }
+
+      &:checked:after {
+        border-color: #2196f3;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+    }
+  */
+
+  label {
+    margin: 0;
+    vertical-align: middle;
+  }
+
+  .mc-choice {
+    margin-bottom: 4px;
+
+    &.focused {
+      outline: 1px dotted black;
+    }
+    label{
+      display: inline;
+    }
+  }
+
+}
+
+.mc-choices.mc-horizontal{
+  display: flex;
+  flex-direction: row;
+
+  label {
+    margin: 0;
+    vertical-align: middle;
+  }
+
+  .mc-choice {
+    display: inline-block;
+    text-align: center;
+    flex-grow: 1;
+    margin-bottom: 4px;
+
+    &.focused {
+      outline: 1px dotted black;
+    }
+    label{
+      display: block;
+    }
+  }
+}

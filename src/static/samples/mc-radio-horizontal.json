@@ -1,0 +1,160 @@
+{
+  "sections": {
+    "units": [
+      "Who was the second president of the USA?",
+      {
+        "type": "widget",
+        "value": {
+          "type": "mc",
+          "subtype": "radio",
+          "randomOrder": false,
+          "horizontal": true,
+          "choices": [
+            {
+              "alternatives": [
+                "Bill",
+                "Clinton"
+              ],
+              "display": "",
+              "speech": "Bill Clinton",
+              "value": "a"
+            },
+            {
+              "alternatives": [
+                "John",
+                "Adams"
+              ],
+              "display": "",
+              "speech": "John Adams",
+              "value": "b"
+            },
+            {
+              "alternatives": [
+                "Andrew",
+                "Jackson"
+              ],
+              "display": "",
+              "speech": "Andrew Jackson",
+              "value": "c"
+            },
+            {
+              "alternatives": [
+                "James",
+                "Madison"
+              ],
+              "display": "",
+              "speech": "James Madison",
+              "value": "d"
+            }
+          ]
+        }
+      },
+      "Who was the third president of the USA?",
+      {
+        "type": "widget",
+        "value": {
+          "type": "mc",
+          "subtype": "radio",
+          "randomOrder": false,
+          "horizontal": true,
+          "choices": [
+            {
+              "alternatives": [
+                "Bill",
+                "Clinton"
+              ],
+              "display": "",
+              "speech": "Bill Clinton",
+              "value": "a"
+            },
+            {
+              "alternatives": [
+                "John",
+                "Adams"
+              ],
+              "display": "",
+              "speech": "John Adams",
+              "value": "b"
+            },
+            {
+              "alternatives": [
+                "Andrew",
+                "Jackson"
+              ],
+              "display": "",
+              "speech": "Andrew Jackson",
+              "value": "c"
+            },
+            {
+              "alternatives": [
+                "James",
+                "Madison"
+              ],
+              "display": "",
+              "speech": "James Madison",
+              "value": "d"
+            }
+          ]
+        }
+      },
+      "Who was the fourth president of the USA?",
+      {
+        "type": "widget",
+        "value": {
+          "type": "mc",
+          "subtype": "radio",
+          "randomOrder": false,
+          "horizontal": true,
+          "choices": [
+            {
+              "alternatives": [
+                "Bill",
+                "Clinton"
+              ],
+              "display": "",
+              "speech": "Bill Clinton",
+              "value": "a"
+            },
+            {
+              "alternatives": [
+                "John",
+                "Adams"
+              ],
+              "display": "",
+              "speech": "John Adams",
+              "value": "b"
+            },
+            {
+              "alternatives": [
+                "Andrew",
+                "Jackson"
+              ],
+              "display": "",
+              "speech": "Andrew Jackson",
+              "value": "c"
+            },
+            {
+              "alternatives": [
+                "James",
+                "Madison"
+              ],
+              "display": "",
+              "speech": "James Madison",
+              "value": "d"
+            }
+          ]
+        }
+      }
+    ],
+    "speech": "Who was the second president of the USA?"
+  },
+  "feedbacks": {
+    "1": "",
+    "0": "It's incorrect",
+    "0.5": ""
+  },
+  "correct": {
+    "method": "string",
+    "value": "b"
+  }
+}

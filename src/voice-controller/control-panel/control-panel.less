@@ -1,0 +1,379 @@
+/*
+ Copyright 2016
+ Pilyugin Alexey
+
+ This file is part of Voice ART.
+
+ Voice ART is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Voice ART is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Voice ART.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@main-button-size: 40px;
+@max-pulse-size: 20px;
+@power-color: rgb(255, 124, 118);
+@pending-color: #B2DBFB;
+@speaking-color: rgb(83, 180, 255);
+@listening-color: rgb(246, 77, 74);
+@notification-answer-color: green;
+@notification-command-color: red;
+@notification-error-color: red;
+@glowing-duration: .7s;
+@glowing-timing-function: cubic-bezier(0.25, 2, 0.75, 2);
+@outline-padding: 3px;
+
+.cg-voice-cp {
+  position: absolute;
+  top: @max-pulse-size;
+  right: @max-pulse-size;
+  z-index: 1000;
+  text-align: right;
+  overflow: hidden;
+
+  .cg-voice-cp-buttons {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    width: @main-button-size+2*@max-pulse-size;
+    height: @main-button-size+2*@max-pulse-size;
+    padding: @max-pulse-size;
+  }
+
+  .cg-voice-cp-indicator-button {
+    position: relative;
+    z-index: 1;
+    width: @main-button-size;
+    height: @main-button-size;
+    border: none;
+    border-radius: 50%;
+    cursor: default;
+    background-color: @power-color;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-color 0.5s;
+
+    &:hover{
+      box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.2);
+    }
+    &:active {
+      box-shadow: inset 0 0 5px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    &:focus {
+      outline: none;
+
+      &:not(.is-mouse-focused) {
+        box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    &:focus:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: @outline-padding;
+      bottom: @outline-padding;
+      left: @outline-padding;
+      right: @outline-padding;
+      border-radius: 50%;
+      border: 1px dotted #ffffff;
+    }
+    &.is-mouse-focused:focus:after {
+      border: none;
+    }
+  }
+
+  .cg-voice-cp-side-button {
+    position: absolute;
+    top: @main-button-size;
+    left: @main-button-size;
+    width: @main-button-size/2+@max-pulse-size;
+    height: @main-button-size/2+@max-pulse-size;
+    padding: 0;
+    border-bottom-right-radius: 100%;
+    border: 1px fadeout(@speaking-color, 70%) solid;
+    background-color: fadeout(@speaking-color, 90%);
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+    transition: background-color 0.5s;
+
+    &:after {
+      content: '';
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      position: absolute;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 45%;
+      opacity: 0.5;
+      transition: opacity 0.5s;
+    }
+
+    &:hover:not(:disabled) {
+      cursor: pointer;
+      background-color: fadeout(@speaking-color, 80%);
+
+      &:after {
+        opacity: 0.8;
+      }
+    }
+
+    &:active:not(:disabled) {
+      background-color: fadeout(@speaking-color, 60%);
+    }
+
+    &:focus {
+      outline: none;
+      &:not(.is-mouse-focused) {
+        box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    &:disabled:after {
+      opacity: 0.3;
+    }
+
+    &.right-side {
+      .transform(rotate(-45deg));
+      &:after {
+        .transform(rotate(45deg));
+      }
+    }
+
+    &.bottom-side {
+      .transform(rotate(45deg));
+      &:after {
+        .transform(rotate(-45deg));
+      }
+    }
+
+    &.left-side {
+      .transform(rotate(135deg));
+      &:after {
+        .transform(rotate(-135deg));
+      }
+    }
+
+    &.top-side {
+      .transform(rotate(225deg));
+      &:after {
+        .transform(rotate(-225deg));
+      }
+    }
+  }
+
+  .cg-voice-cp-power-button:after {
+    background-image: url("./icons/side-power.svg");
+  }
+
+  .cg-voice-cp-help-button:after {
+    background-image: url("./icons/help.svg");
+  }
+
+  .cg-voice-cp-settings-button:after {
+    background-image: url("./icons/settings.svg");
+  }
+
+  .cg-voice-cp-skip-button:after {
+    background-image: url("./icons/skip-forward.svg");
+  }
+
+  &[state=quiescence] {
+    .cg-voice-cp-indicator-button {
+      cursor: pointer;
+      background-image: url("./icons/power.svg");
+
+      &:hover {
+        background-color: darken(@power-color, 10%);
+      }
+      &:active {
+        background-color: darken(@power-color, 40%);
+      }
+    }
+
+    .cg-voice-cp-side-button {
+      background-color: fadeout(@power-color, 90%);
+      border-color: fadeout(@power-color, 70%);
+      &:hover:not(:disabled) {
+        background-color: fadeout(@power-color, 80%);
+      }
+      &:active:not(:disabled) {
+        background-color: fadeout(@power-color, 60%);
+      }
+    }
+
+    .cg-voice-cp-power-button:after {
+      display: none;
+    }
+  }
+
+  &[state=pending] {
+    .cg-voice-cp-indicator-button {
+      background-color: @pending-color;
+      background-image: url("./icons/dots-horizontal.svg");
+    }
+
+    .cg-voice-cp-side-button {
+      background-color: fadeout(@pending-color, 90%);
+      border-color: fadeout(@pending-color, 70%);
+      &:hover:not(:disabled) {
+        background-color: fadeout(@pending-color, 80%);
+      }
+      &:active:not(:disabled) {
+        background-color: fadeout(@pending-color, 60%);
+      }
+    }
+  }
+
+  &[state=speaking] {
+    .cg-voice-cp-indicator-button {
+      background-color: @speaking-color;
+      background-image: url("./icons/volume-high.svg");
+    }
+
+    .cg-voice-cp-side-button {
+      background-color: fadeout(@speaking-color, 90%);
+      border-color: fadeout(@speaking-color, 70%);
+      &:hover:not(:disabled) {
+        background-color: fadeout(@speaking-color, 80%);
+      }
+      &:active:not(:disabled) {
+        background-color: fadeout(@speaking-color, 60%);
+      }
+    }
+  }
+
+  &[state=listening] {
+    .cg-voice-cp-indicator-button {
+      background-color: @listening-color;
+      background-image: url("./icons/microphone.svg");
+    }
+
+    .cg-voice-cp-side-button {
+      background-color: fadeout(@listening-color, 90%);
+      border-color: fadeout(@listening-color, 70%);
+      &:hover:not(:disabled) {
+        background-color: fadeout(@listening-color, 80%);
+      }
+      &:active:not(:disabled) {
+        background-color: fadeout(@listening-color, 60%);
+      }
+    }
+  }
+
+  &[active=active] {
+    .cg-voice-cp-indicator-button {
+      animation: growing 1s linear infinite alternate;
+    }
+
+    &[state=speaking] .cg-voice-cp-indicator-button {
+      animation: growing-speaking 1s linear infinite alternate;
+    }
+
+    &[state=listening] .cg-voice-cp-indicator-button {
+      animation: growing-listening 1s linear infinite alternate;
+    }
+  }
+
+  .cg-voice-cp-messages {
+    //position: absolute;
+    top: calc(~'100% + @{max-pulse-size}');
+    margin-top: @max-pulse-size;
+    right: 0;
+    width: 300px;
+
+    &.cg-voice-cp-hidden{
+      display: none;
+    }
+
+    .cg-voice-cp-notification {
+      transition: opacity 3s;
+
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
+      &[type=error] {
+        animation: notification-glowing-error @glowing-duration @glowing-timing-function both;
+      }
+      &[type=answer] {
+        animation: notification-glowing-answer @glowing-duration @glowing-timing-function both;
+      }
+      &[type=command] {
+        animation: notification-glowing-command @glowing-duration @glowing-timing-function both;
+      }
+    }
+  }
+}
+
+.transform(@val) {
+  -moz-transform: @val;
+  -ms-transform: @val;
+  -webkit-transform: @val;
+  -o-transform: @val;
+  transform: @val;
+}
+
+.keyframes(@name; @arguments) {
+  @-moz-keyframes @name {
+    @arguments();
+  }
+  @-webkit-keyframes @name {
+    @arguments();
+  }
+  @keyframes @name {
+    @arguments();
+  }
+}
+
+.growing-frames(@pulse-color) {
+  0% {
+    box-shadow: @pulse-color 0 0 0 0;
+  }
+  100% {
+    box-shadow: @pulse-color 0 0 0 @max-pulse-size;
+  }
+}
+
+.glowing-frames(@glow-color) {
+  0% {
+    color: inherit;
+    text-shadow: inherit;
+  }
+  100% {
+    color: darken(@glow-color, 5%);
+    text-shadow: @glow-color 0 0 2px;
+  }
+}
+
+.fadeout-frames() {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.keyframes(growing; { .growing-frames(fadeout(@power-color, 70%)) });
+.keyframes(growing-speaking; { .growing-frames(fadeout(@speaking-color, 70%)) });
+.keyframes(growing-listening; { .growing-frames(fadeout(@listening-color, 70%)) });
+
+.keyframes(notification-glowing-answer; { .glowing-frames(@notification-answer-color) });
+.keyframes(notification-glowing-command; { .glowing-frames(@notification-command-color) });
+.keyframes(notification-glowing-error; { .glowing-frames(@notification-error-color) });
+
+.keyframes(notification-fadeout; { .fadeout-frames() });

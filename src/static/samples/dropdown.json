@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "units": [
+      {
+        "type": "text",
+        "value": "Peaks and valleys on a polynomial graph are called "
+      },
+      {
+        "type": "widget",
+        "value": {
+          "type": "dropdown",
+          "options": [
+            {
+              "value": "a",
+              "display": "odd",
+              "speech": "odd"
+            },
+            {
+              "value": "b",
+              "display": "even",
+              "speech": "even"
+            },
+            {
+              "value": "c",
+              "display": "turning",
+              "speech": "turning"
+            },
+            {
+              "value": "d",
+              "display": "decreasing",
+              "speech": "decreasing"
+            },
+            {
+              "value": "e",
+              "display": "increasing",
+              "speech": "increasing"
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "value": " points."
+      }
+    ],
+    "speech": "Peaks and valleys on a polynomial graph are called which points?"
+  },
+  "correct": [
+    {
+      "method": "string",
+      "value": "c"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "sections": {
+    "units": [
+      "The area of an isosceles triangle having base 2 cm and the length of one of the equal sides 4 cm, is",
+      {
+        "type": "widget",
+        "value": {
+          "type": "mc",
+          "subtype": "radio",
+          "randomOrder": true,
+          "choices": [
+            {
+              "value": "a",
+              "display": {
+                "type": "mathml",
+                "value": "<math><mrow><msqrt><mrow><mn>15</mn></mrow></msqrt><msup><mrow><mi class='MathML-Unit'>cm</mi></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>"
+              }
+            },
+            {
+              "value": "b",
+              "display": {
+                "type": "mathml",
+                "value": "<math><mrow><msqrt><mrow><mfrac numalign='center' denomalign='center'><mrow><mn>15</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></msqrt><msup><mrow><mi class='MathML-Unit'>cm</mi></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>"
+              }
+            },
+            {
+              "value": "c",
+              "display": {
+                "type": "mathml",
+                "value": "<math><mrow><mn>2</mn><msqrt><mrow><mn>15</mn></mrow></msqrt><msup><mrow><mi class='MathML-Unit'>cm</mi></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>"
+              }
+            },
+            {
+              "value": "d",
+              "display": {
+                "type": "mathml",
+                "value": "<math><mrow><mn>4</mn><msqrt><mrow><mn>15</mn></mrow></msqrt><msup><mrow><mi class='MathML-Unit'>cm</mi></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "correct": {
+    "method": "string",
+    "value": "a"
+  }
+}

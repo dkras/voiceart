@@ -1,0 +1,15 @@
+{
+  "MC: Likert": "mc-radio-horizontal.json",
+  "MC: Single": "mc-radio.json",
+  "MC: Multiple": "mc-checkbox.json",
+  "MC: HTML content": "mc-html-content.json",
+  "MC: Image content": "mc-image-content.json",
+  "MC: Formulas content": "mc-formulas-content.json",
+  "Dropdown": "dropdown.json",
+  "Dropdown multi": "dropdown-multi.json",
+  "Essay": "essay.json",
+  "FITB": "fitb.json",
+  "FITB formula": "fitb-formula.json",
+  "FITB multi": "fitb-multi.json",
+  "Multi item": "multi.json"
+}

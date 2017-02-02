@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "units": [
+      {
+        "type": "html",
+        "value": "If <b><i>a=1</i></b> and <b><i>b=2</i></b>, what is <b><i>a+b</i></b>?"
+      },
+      {
+        "type": "widget",
+        "value": {
+          "type": "mc",
+          "subtype": "radio",
+          "randomOrder": true,
+          "choices": [
+            {
+              "value": "a",
+              "display": "12c",
+              "speech": "12c"
+            },
+            {
+              "value": "b",
+              "display": {
+                "type": "html",
+                "value": "<b>3</b>"
+              },
+              "speech": "3"
+            },
+            {
+              "value": "c",
+              "display": "4",
+              "speech": "4"
+            },
+            {
+              "value": "d",
+              "display": "10",
+              "speech": "10"
+            },
+            {
+              "value": "e",
+              "display": "8",
+              "speech": "8"
+            },
+            {
+              "value": "f",
+              "display": "I don't know",
+              "speech": "I don't know"
+            }
+          ]
+        }
+      }
+    ],
+    "speech": "If a=1 and b=2, what is a+b?"
+  },
+  "correct": {
+    "method": "string",
+    "value": "b"
+  }
+}
