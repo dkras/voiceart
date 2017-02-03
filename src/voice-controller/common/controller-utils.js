@@ -173,7 +173,7 @@ export default {
         } else if(!!descId){
             text = document.querySelector(`#${descId}`).textContent;
         }
-        return this.processText(text, addDotsToLineBreak);
+        return this.processText(text, element, addDotsToLineBreak);
     },
 
     /**
@@ -197,7 +197,7 @@ export default {
         } else if(!!labelId){
             text = document.querySelector(`#${labelId}`).textContent;
         }
-        return this.processText(text, addDotsToLineBreak);
+        return this.processText(text, element, addDotsToLineBreak);
     },
 
     /**
@@ -233,10 +233,10 @@ export default {
             }
         }
 
-        return this.processText(text, addDotsToLineBreak);
+        return this.processText(text, element, addDotsToLineBreak);
     },
 
-    processText(text, addDotsToLineBreak){
+    processText(text, element, addDotsToLineBreak){
         // remove line breaks
         text = text.replace(/[\r\n]/g, ' ');
         // and multiple whitespaces
