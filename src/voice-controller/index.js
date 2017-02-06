@@ -38,6 +38,7 @@ import AsyncInitialized from './common/async-initialized';
 import ItemEvent from './common/item/item-event';
 import Command from './common/command';
 import commonUtils from '../common/common-utils';
+import utils from './common/controller-utils';
 import strings from './common/strings';
 import MET from 'cg-met';
 import merge from 'merge';
@@ -78,6 +79,9 @@ class VoiceController extends AsyncInitialized {
     }
     static get Command(){
         return Command;
+    }
+    static get utils(){
+        return utils;
     }
     static get commonUtils(){
         return commonUtils;

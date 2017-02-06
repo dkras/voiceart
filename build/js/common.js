@@ -9477,6 +9477,7 @@
 	strings.selectors = {
 	    NAMESPACE: 'vart',
 	    FIELD: 'field',
+	    SUBMIT: 'submit',
 	    CHOICE: 'choice',
 	    OPTION: 'option',
 	    TITLE: 'title'
@@ -9706,7 +9707,7 @@
 	        } else if (!!descId) {
 	            text = document.querySelector('#' + descId).textContent;
 	        }
-	        return this.processText(text, addDotsToLineBreak);
+	        return this.processText(text, element, addDotsToLineBreak);
 	    },
 
 	    /**
@@ -9732,7 +9733,7 @@
 	        } else if (!!labelId) {
 	            text = document.querySelector('#' + labelId).textContent;
 	        }
-	        return this.processText(text, addDotsToLineBreak);
+	        return this.processText(text, element, addDotsToLineBreak);
 	    },
 
 	    /**
@@ -9767,10 +9768,10 @@
 	                }
 	            }
 
-	        return this.processText(text, addDotsToLineBreak);
+	        return this.processText(text, element, addDotsToLineBreak);
 	    },
 
-	    processText: function processText(text, addDotsToLineBreak) {
+	    processText: function processText(text, element, addDotsToLineBreak) {
 	        // remove line breaks
 	        text = text.replace(/[\r\n]/g, ' ');
 	        // and multiple whitespaces

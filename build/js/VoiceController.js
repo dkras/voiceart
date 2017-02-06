@@ -198,6 +198,10 @@ return webpackJsonpVoiceArt__name_([2],[
 
 	var _commonUtils2 = _interopRequireDefault(_commonUtils);
 
+	var _controllerUtils = __webpack_require__(73);
+
+	var _controllerUtils2 = _interopRequireDefault(_controllerUtils);
+
 	var _strings = __webpack_require__(71);
 
 	var _strings2 = _interopRequireDefault(_strings);
@@ -263,6 +267,11 @@ return webpackJsonpVoiceArt__name_([2],[
 	        key: 'Command',
 	        get: function get() {
 	            return _command2.default;
+	        }
+	    }, {
+	        key: 'utils',
+	        get: function get() {
+	            return _controllerUtils2.default;
 	        }
 	    }, {
 	        key: 'commonUtils',
@@ -8237,6 +8246,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	});*/
 
 	var FIELD_CLASS = _strings2.default.selectors.NAMESPACE + '-' + _strings2.default.selectors.FIELD;
+	var SUBMIT_CLASS = _strings2.default.selectors.NAMESPACE + '-' + _strings2.default.selectors.SUBMIT;
 
 	var Item = function (_AsyncInitialized) {
 	    _inherits(Item, _AsyncInitialized);
@@ -8299,6 +8309,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	            this._fieldElements = Array.prototype.slice.call(this.domElement.querySelectorAll('.' + FIELD_CLASS));
 	            this._fields = [];
 	            this._index = 0;
+	            this.submitButton = this.domElement.querySelector('.' + SUBMIT_CLASS);
 	            this._fieldElements.forEach(function (el, index) {
 	                var field = _this2._initField(el);
 	                if (field) _this2._fields.push(field);
@@ -8350,6 +8361,9 @@ return webpackJsonpVoiceArt__name_([2],[
 	    }, {
 	        key: 'submit',
 	        value: function submit() {
+	            var clickEvent = document.createEvent('MouseEvents');
+	            clickEvent.initEvent('click', true, true);
+	            this.submitButton.dispatchEvent(clickEvent);
 	            this.emit(_itemEvent2.default.SUBMIT);
 	        }
 	    }, {
