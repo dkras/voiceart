@@ -184,6 +184,7 @@ strings.types = [
 strings.selectors = {
     NAMESPACE: 'vart',
     FIELD: 'field',
+    SUBMIT: 'submit',
     CHOICE: 'choice',
     OPTION: 'option',
     TITLE: 'title'

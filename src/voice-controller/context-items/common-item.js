@@ -37,6 +37,7 @@ import merge from 'merge';
 });*/
 
 const FIELD_CLASS = `${strings.selectors.NAMESPACE}-${strings.selectors.FIELD}`;
+const SUBMIT_CLASS = `${strings.selectors.NAMESPACE}-${strings.selectors.SUBMIT}`;
 
 export default class Item extends AsyncInitialized {
 
@@ -81,6 +82,7 @@ export default class Item extends AsyncInitialized {
         this._fieldElements = Array.prototype.slice.call(this.domElement.querySelectorAll(`.${FIELD_CLASS}`));
         this._fields = [];
         this._index = 0;
+        this.submitButton = this.domElement.querySelector(`.${SUBMIT_CLASS}`);
         this._fieldElements.forEach((el, index) => {
             let field = this._initField(el);
             if(field)
@@ -131,6 +133,9 @@ export default class Item extends AsyncInitialized {
 
     /** @inheritdoc */
     submit() {
+        var clickEvent = document.createEvent('MouseEvents');
+        clickEvent.initEvent('click', true, true);
+        this.submitButton.dispatchEvent(clickEvent);
         this.emit(ItemEvent.SUBMIT);
     }
 

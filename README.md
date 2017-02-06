@@ -55,6 +55,8 @@ or
     var item = new ItemRenderer(containerElement, config); //init new task item according to the configuration
     var voiceController = new VoiceController(containerElement, settings); //init VoiceController which parse item html and create voice controller for it
 ```
+[ItemRenderer config json examples](https://github.com/competentum/voice-art/tree/master/src/static/samples)
+
 The **context** property must be the same
 
 ####  Using VoiceController only (common scenario)
@@ -72,6 +74,7 @@ Add to the task layout the following classes so that the Voice Controller can pa
 Class | Element | Description
 --- | --- | ---
 vart-title | element with item label or description | A class containing the item description text.
+vart-submit | submit button element | A class submitting item.
 vart-field | field wrapper element | A class used as a field wrapper element which can contain an optional label or description.
 vart-field-title | field label element | A class that contains field labels or descriptions.
 vart-mc | field wrapper element | A class for Multiple Choice (MC) tasks processing (specifies the MC field type).
