@@ -822,8 +822,8 @@ return webpackJsonpVoiceArt__name_([2],[
 
 	                        // replace predefined phrases from settings
 	                        for (var _j = 0; _j < self.settings.alternatives.length; _j++) {
-	                            var _phrase = alternatives.phrase;
-	                            var _altRegExp = new RegExp('\\b(' + alternatives.alts.join('|') + ')\\b', 'ig');
+	                            var _phrase = self.settings.alternatives[_j].phrase;
+	                            var _altRegExp = new RegExp('\\b(' + self.settings.alternatives[_j].alts.join('|') + ')\\b', 'ig');
 	                            word = word.replace(_altRegExp, _phrase);
 	                        }
 

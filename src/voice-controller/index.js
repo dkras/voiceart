@@ -633,8 +633,8 @@ class VoiceController extends AsyncInitialized {
 
                     // replace predefined phrases from settings
                     for (let j = 0; j < self.settings.alternatives.length; j++) {
-                        let phrase = alternatives.phrase;
-                        let altRegExp = new RegExp(`\\b(${alternatives.alts.join('|')})\\b`, 'ig');
+                        let phrase = self.settings.alternatives[j].phrase;
+                        let altRegExp = new RegExp(`\\b(${self.settings.alternatives[j].alts.join('|')})\\b`, 'ig');
                         word = word.replace(altRegExp, phrase);
                     }
 
