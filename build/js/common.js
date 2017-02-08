@@ -2237,6 +2237,8 @@
 		    //hot fix
 		    {mask: /open parentheses/g, latex: '('},
 		    {mask: /close parentheses/g, latex: ')'},
+		    {mask: /left parentheses/g, latex: '('},
+		    {mask: /right parentheses/g, latex: ')'},
 		
 		    {mask: /open interval from .+? to [^\s]+/g, latex: function(text){
 		        return '(' + text.replace('open interval from ', '').replace('to', ', ') + ')';
