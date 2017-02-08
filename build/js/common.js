@@ -2222,8 +2222,23 @@
 		        return '|' + text.replace('magnitude of ', '') + '|';
 		    }},
 		
-		    {mask: /(round )?bracket(s)? open(ed|ing)? /g, latex: '('},
-		    {mask: /( round)? bracket(s)? close(ed|ing)?/g, latex: ')'},
+		  {mask: /left parenthesis/g, latex: '('},
+		  {mask: /right parenthesis/g, latex: ')'},
+		
+		  {mask: /(round )?bracket(s)? open(ed|ing)?/g, latex: '('},
+		  {mask: /(round )?bracket(s)? close(ed|ing)?/g, latex: ')'},
+		
+		  {mask: /open(ed|ing)? (round )?bracket(s)?/g, latex: '('},
+		  {mask: /close(ed|ing)? (round )?bracket(s)?/g, latex: ')'},
+		
+		    {mask: /open parenthesis/g, latex: '('},
+		    {mask: /close parenthesis/g, latex: ')'},
+		
+		    //hot fix
+		    {mask: /open parentheses/g, latex: '('},
+		    {mask: /close parentheses/g, latex: ')'},
+		    {mask: /left parentheses/g, latex: '('},
+		    {mask: /right parentheses/g, latex: ')'},
 		
 		    {mask: /open interval from .+? to [^\s]+/g, latex: function(text){
 		        return '(' + text.replace('open interval from ', '').replace('to', ', ') + ')';
@@ -3701,6 +3716,7 @@
 		  /** @namespace Az **/
 		  if (true) {
 		    var fs = __webpack_require__(35);
+		    console.log(fs);
 		  }
 		
 		  var Az = {
