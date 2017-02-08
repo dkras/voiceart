@@ -17886,7 +17886,7 @@ return webpackJsonpVoiceArt__name_([0],[
 	                                answer.sort();
 	                            }
 	                        }
-
+	                        //console.log(answer);
 	                        if (!!_this2.settings.widgets[_i].config.noGrade) {
 	                            if (answer.length > 0) score++;
 	                        } else if (correctAnswer.method === 'string' && Array.isArray(correctAnswer.value)) {
@@ -17934,6 +17934,7 @@ return webpackJsonpVoiceArt__name_([0],[
 	                    }
 
 	                    resolve({
+	                        answers: answers,
 	                        score: score,
 	                        feedback: feedback
 	                    });

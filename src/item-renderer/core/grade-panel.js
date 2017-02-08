@@ -213,7 +213,7 @@ export default class GradePanel extends EventEmitter {
                             answer.sort();
                         }
                     }
-
+                    //console.log(answer);
                     if(!!this.settings.widgets[i].config.noGrade) {
                         if (answer.length > 0)
                             score++;
@@ -253,6 +253,7 @@ export default class GradePanel extends EventEmitter {
                 }
 
                 resolve({
+                    answers: answers,
                     score: score,
                     feedback: feedback
                 });
