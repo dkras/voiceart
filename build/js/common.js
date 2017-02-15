@@ -2225,11 +2225,11 @@
 		  {mask: /left parenthesis/g, latex: '('},
 		  {mask: /right parenthesis/g, latex: ')'},
 		
-		  {mask: /(round )?bracket(s)? open(ed|ing)?/g, latex: '('},
-		  {mask: /(round )?bracket(s)? close(ed|ing)?/g, latex: ')'},
+		  //{mask: /(round )?bracket(s)? open(ed|ing)?/g, latex: '('},
+		  //{mask: /(round )?bracket(s)? clos(e|ed|ing)?/g, latex: ')'},
 		
 		  {mask: /open(ed|ing)? (round )?bracket(s)?/g, latex: '('},
-		  {mask: /close(ed|ing)? (round )?bracket(s)?/g, latex: ')'},
+		  {mask: /clos(e|ed|ing)? (round )?bracket(s)?/g, latex: ')'},
 		
 		    {mask: /open parenthesis/g, latex: '('},
 		    {mask: /close parenthesis/g, latex: ')'},
@@ -3014,6 +3014,7 @@
 		    },
 		    average = {
 		        'veinte': 20,
+		        'veinticuatro': 24,
 		        'treinta': 30,
 		        'cuarenta': 40,
 		        'cincuenta': 50,
@@ -3142,7 +3143,13 @@
 		    {mask: /vartheta/g, latex: '\\vartheta', exp: 'vartheta', priority: -1},
 		    {mask: /upsilon/g, latex: '\\upsilon', exp: 'upsilon', priority: -1},
 		    {mask: /xi/g, latex: '\\xi', exp: 'xi', priority: -1},
-		    {mask: /zeta/g, latex: '\\zeta', exp: 'zeta', priority: -1}
+		    {mask: /zeta/g, latex: '\\zeta', exp: 'zeta', priority: -1},
+		
+		  //for correct 'X' latin
+		    {mask: /equis/g, latex: '\\x', exp: 'x'},
+		    {mask: /me quieres/g, latex: '\\x', exp: 'x'}
+		
+		
 		];
 		
 		module.exports = SIGNS;
@@ -3159,6 +3166,9 @@
 		    {mask: /coma/g, latex: function(text){
 		      return text.replace('coma ', '.');
 		    }, priority: 2},
+		  {mask: / punto /g, latex: function(text){
+		      return text.replace(' punto ', '.');
+		    }},
 		
 		    {mask: /más/g, latex: '+'},
 		    {mask: /plus/g, latex: '+'},
@@ -3333,10 +3343,9 @@
 		var SIGNS = [
 		    {mask: /the one half/g, latex: '\\frac{1}{2}', exp: 'frac{1}{2}', priority: 2},
 		    {mask: /and 1 half/g, latex: '\\frac{1}{2}', exp: 'frac{1}{2}', priority: 1},
-		    {mask: /1 half/g, latex: '\\frac{1}{2}', exp: 'frac{1}{2}', priority: 1},
+		    {mask: /y medio/g, latex: '\\frac{1}{2}', exp: 'frac{1}{2}', priority: 1},
 		    {mask: /and a half/g, latex: '\\frac{1}{2}', exp: 'frac{1}{2}', priority: 1},
 		    {mask: /half/g, latex: '\\frac{1}{2}', exp: 'frac{1}{2}', priority: 0}
-		
 		];
 		
 		
@@ -3716,7 +3725,6 @@
 		  /** @namespace Az **/
 		  if (true) {
 		    var fs = __webpack_require__(35);
-		    console.log(fs);
 		  }
 		
 		  var Az = {
