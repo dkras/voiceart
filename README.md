@@ -146,22 +146,16 @@ $.getJSON('samples/demo-pack/mc-checkbox.json', function(config){
 License
 -------
 
-Competentum Group's VoiceART License
+##### Competentum Commercial License 
+Competentum provides its VoiceART product under a dual license model designed to meet the development and distribution needs of both commercial and open source projects.
 
-Competentum Group licenses VoiceART under the [GNU Public License version 3](https://www.gnu.org/licenses/gpl-3.0.html). VoiceART Enterprise is licensed under a commercial 
-Competentum Group license.
+##### For Distributors of Commercial Applications:
+Organizations that develop and/or distribute commercially licensed software with VoiceART software and do not wish to distribute the source code for the commercially licensed software under version 3 of the GNU General Public License (the "GPL") must enter into a commercial license agreement with Competentum.
 
-We encourage VoiceART users to learn about the license by [reading the license](https://www.gnu.org/licenses/gpl-3.0.html) and [frequently asked questions](https://www.gnu.org/licenses/gpl-faq.html) provided by the Free Software Foundation.
+##### For Open Source Projects and Other Developers of Open Source Applications:
+For developers of applications under the GPL that want to combine and distribute those applications with VoiceART software, Competentum’s VoiceART open source software licensed under the GPL is the best option.
 
-VoiceART is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+We encourage VoiceART users to learn about the license by [reading the license](https://www.gnu.org/licenses/gpl-3.0.html) and []frequently asked questions](https://www.gnu.org/licenses/gpl-faq.html) provided by the Free Software Foundation.
 
- VoiceART is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with VoiceART.  If not, see <http://www.gnu.org/licenses/>.
+VoiceART is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with VoiceART. If not, see http://www.gnu.org/licenses/.
