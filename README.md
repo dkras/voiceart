@@ -155,7 +155,7 @@ Organizations that develop and/or distribute commercially licensed software with
 ##### For Open Source Projects and Other Developers of Open Source Applications:
 For developers of applications under the GPL that want to combine and distribute those applications with VoiceART software, Competentum’s VoiceART open source software licensed under the GPL is the best option.
 
-We encourage VoiceART users to learn about the license by [reading the license](https://www.gnu.org/licenses/gpl-3.0.html) and []frequently asked questions](https://www.gnu.org/licenses/gpl-faq.html) provided by the Free Software Foundation.
+We encourage VoiceART users to learn about the license by [reading the license](https://www.gnu.org/licenses/gpl-3.0.html) and [frequently asked questions](https://www.gnu.org/licenses/gpl-faq.html) provided by the Free Software Foundation.
 
 VoiceART is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with VoiceART. If not, see http://www.gnu.org/licenses/.
