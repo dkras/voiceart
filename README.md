@@ -1,4 +1,4 @@
-[![VoiceArt](voice-art.png)](https://github.com/966647/voice-art)
+[![VoiceArt](voice-art.png)](https://github.com/competentum/voice-art)
 
 Overview
 -------
@@ -20,9 +20,9 @@ Installation
 -------
 Install the voice-art module as dependency in your project via npm:
 ```sh
-npm install git+https://github.com/966647/voice-art.git
+npm install git+https://github.com/competentum/voice-art.git
 ```
-or download voice-art lib files from [github](https://github.com/966647/voice-art)
+or download voice-art lib files from [github](https://github.com/competentum/voice-art)
 
 Usage
 -------
