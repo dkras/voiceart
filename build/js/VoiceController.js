@@ -174,11 +174,11 @@ return webpackJsonpVoiceArt__name_([2],[
 
 	var _speechRecognitionService2 = _interopRequireDefault(_speechRecognitionService);
 
-	var _controlPanel = __webpack_require__(150);
+	var _controlPanel = __webpack_require__(145);
 
 	var _controlPanel2 = _interopRequireDefault(_controlPanel);
 
-	var _simulator = __webpack_require__(161);
+	var _simulator = __webpack_require__(156);
 
 	var _simulator2 = _interopRequireDefault(_simulator);
 
@@ -522,7 +522,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	            } else {
 	                var context = this.settings.context;
 	                opts.context = context;
-	                ContextItem = __webpack_require__(162)("./" + context + '-item.js');
+	                ContextItem = __webpack_require__(157)("./" + context + '-item.js');
 	            }
 	            this.item = new ContextItem(this.domElement, opts, this.commandService);
 	            this.item.on(_itemEvent2.default.SUBMIT, this._onSubmit.bind(this));
@@ -4950,7 +4950,7 @@ return webpackJsonpVoiceArt__name_([2],[
 
 	var _merge2 = _interopRequireDefault(_merge);
 
-	var _cgSlider = __webpack_require__(143);
+	var _cgSlider = __webpack_require__(139);
 
 	var _cgSlider2 = _interopRequireDefault(_cgSlider);
 
@@ -5199,12 +5199,12 @@ return webpackJsonpVoiceArt__name_([2],[
 	'use strict';
 
 	__webpack_require__(134);
-	__webpack_require__(137);
+	__webpack_require__(3);
 
-	var EventEmitter = __webpack_require__(139);
-	var inherits = __webpack_require__(140);
-	var merge = __webpack_require__(141);
-	var utils = __webpack_require__(142);
+	var EventEmitter = __webpack_require__(10);
+	var inherits = __webpack_require__(137);
+	var merge = __webpack_require__(64);
+	var utils = __webpack_require__(138);
 
 	var DIALOG_CLASS = 'cg-dialog';
 	var BEFORE_DIALOG_CLASS = DIALOG_CLASS + '-before';
@@ -5487,477 +5487,6 @@ return webpackJsonpVoiceArt__name_([2],[
 
 /***/ },
 /* 137 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(138);
-
-	(function () {
-	    var MOUSE_FOCUSED_CLASS = 'is-mouse-focused';
-
-	    if (window.mouseFocusingInitialized)
-	        return;
-
-	    window.mouseFocusingInitialized = true;
-
-	    if (document.readyState == "interactive") {
-	        addListeners();
-	    }
-	    else {
-	        document.addEventListener('DOMContentLoaded', addListeners);
-	    }
-
-	    function addListeners() {
-	        var justBlured;
-	        var wasMouseFocused;
-	        document.body.addEventListener('mousedown', function (e) {
-	            var el = e.target;
-	            var labeledElement;
-
-	            // collect clicked element with it's parents before body-element (except svg elements)
-	            var els = [];
-	            while (el && el.tagName.toLowerCase() != 'body') {
-	                if (!el.namespaceURI || el.namespaceURI.toLowerCase().indexOf('svg') == -1) {
-	                    els.push(el);
-	                    el.addEventListener('focus', onFocus);
-
-	                    // if label element is clicked, bound element can be focused
-	                    if (el.tagName.toLowerCase() === 'label') {
-	                        // save element bound to label
-	                        if (el.getAttribute('for')) {
-	                            labeledElement = document.getElementById(el.getAttribute('for'));
-	                        }
-	                        else {
-	                            labeledElement = el.querySelector('input');
-	                        }
-	                        if (labeledElement) {
-	                            labeledElement.addEventListener('focus', onFocus);
-	                            document.addEventListener('mouseup', onMouseUp);
-	                        }
-	                    }
-	                }
-	                el = el.parentNode;
-	            }
-
-	            // if clicked element has already focused by keyboard
-	            // wait for `document.activeElement` to change
-	            setTimeout(function () {
-	                // find focused element
-	                onFocus.apply(document.activeElement);
-	            }, 0);
-
-	            function onMouseUp() {
-	                document.removeEventListener('mouseup', onMouseUp);
-	                if (labeledElement) {
-	                    // wait while labeled element will be focused
-	                    // then remove focus listener
-	                    setTimeout(function () {
-	                        labeledElement.removeEventListener('focus', onFocus);
-	                        labeledElement = undefined;
-	                    }, 0);
-	                }
-	            }
-
-	            function onFocus() {
-	                setMouseFocused(this);
-	                removeFocusListeners();
-	            }
-
-	            function removeFocusListeners() {
-	                for (var i = 0; i < els.length; i++) {
-	                    el = els[i];
-	                    el.removeEventListener('focus', onFocus);
-	                }
-	            }
-	        });
-
-	        window.addEventListener('blur', function (e) {
-	            if (e.target != this)
-	                return;
-
-	            // save element to restore mouse-focused class when this tab will be focused again
-	            if (justBlured) {
-	                wasMouseFocused = justBlured;
-	            }
-	        }, true);
-
-	        window.addEventListener('focus', function () {
-	            // restore mouse-focused
-	            if (wasMouseFocused) {
-	                if (document.activeElement == wasMouseFocused) {
-	                    setMouseFocused(wasMouseFocused);
-	                }
-	                wasMouseFocused = undefined;
-	            }
-
-	        });
-
-	        function onBlur() {
-	            // save element in case when element is blurred with current browser tab blur
-	            // to restore mouse-focused class when this tab will be focused again
-	            justBlured = this;
-	            this.removeEventListener('blur', onBlur);
-	            utils.removeClass(this, MOUSE_FOCUSED_CLASS);
-
-	            // clear justBlured, if this tab was blurred, element should be saved in wasMouseFocused variable
-	            setTimeout(function () {
-	                justBlured = undefined;
-	            }, 0);
-	        }
-
-	        function setMouseFocused(element) {
-	            // if found and it's not body
-	            if (element && element.tagName.toLowerCase() != 'body') {
-	                // add special class, remove it after `blur`
-	                utils.addClass(element, MOUSE_FOCUSED_CLASS);
-	                element.addEventListener('blur', onBlur);
-	            }
-	        }
-	    }
-
-	})();
-
-/***/ },
-/* 138 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {
-
-	    /**
-	     *
-	     * @param {Element} element
-	     * @param {string} className
-	     */
-	    addClass: function addClass(element, className) {
-	        var re = new RegExp("(^|\\s)" + className + "(\\s|$)", "g");
-	        if (re.test(element.className)) return;
-	        element.className = (element.className + " " + className).replace(/\s+/g, " ").replace(/(^ | $)/g, "");
-	    },
-
-	    /**
-	     *
-	     * @param {Element} element
-	     * @param {string} className
-	     */
-	    removeClass: function removeClass(element, className) {
-	        var re = new RegExp("(^|\\s)" + className + "(\\s|$)", "g");
-	        element.className = element.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "");
-	    }
-	};
-
-/***/ },
-/* 139 */
-/***/ function(module, exports) {
-
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
-
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
-
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
-
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
-
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
-
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      } else {
-	        // At least give some kind of context to the user
-	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-	        err.context = er;
-	        throw err;
-	      }
-	    }
-	  }
-
-	  handler = this._events[type];
-
-	  if (isUndefined(handler))
-	    return false;
-
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        args = Array.prototype.slice.call(arguments, 1);
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    args = Array.prototype.slice.call(arguments, 1);
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
-
-	  return true;
-	};
-
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  var fired = false;
-
-	  function g() {
-	    this.removeListener(type, g);
-
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-
-	  g.listener = listener;
-	  this.on(type, g);
-
-	  return this;
-	};
-
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events || !this._events[type])
-	    return this;
-
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-
-	    if (position < 0)
-	      return this;
-
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-
-	  if (!this._events)
-	    return this;
-
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-
-	  listeners = this._events[type];
-
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else if (listeners) {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-
-	  return this;
-	};
-
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-
-	EventEmitter.prototype.listenerCount = function(type) {
-	  if (this._events) {
-	    var evlistener = this._events[type];
-
-	    if (isFunction(evlistener))
-	      return 1;
-	    else if (evlistener)
-	      return evlistener.length;
-	  }
-	  return 0;
-	};
-
-	EventEmitter.listenerCount = function(emitter, type) {
-	  return emitter.listenerCount(type);
-	};
-
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
-
-/***/ },
-/* 140 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -5986,188 +5515,7 @@ return webpackJsonpVoiceArt__name_([2],[
 
 
 /***/ },
-/* 141 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module) {/*!
-	 * @name JavaScript/NodeJS Merge v1.2.0
-	 * @author yeikos
-	 * @repository https://github.com/yeikos/js.merge
-
-	 * Copyright 2014 yeikos - MIT license
-	 * https://raw.github.com/yeikos/js.merge/master/LICENSE
-	 */
-
-	;(function(isNode) {
-
-		/**
-		 * Merge one or more objects 
-		 * @param bool? clone
-		 * @param mixed,... arguments
-		 * @return object
-		 */
-
-		var Public = function(clone) {
-
-			return merge(clone === true, false, arguments);
-
-		}, publicName = 'merge';
-
-		/**
-		 * Merge two or more objects recursively 
-		 * @param bool? clone
-		 * @param mixed,... arguments
-		 * @return object
-		 */
-
-		Public.recursive = function(clone) {
-
-			return merge(clone === true, true, arguments);
-
-		};
-
-		/**
-		 * Clone the input removing any reference
-		 * @param mixed input
-		 * @return mixed
-		 */
-
-		Public.clone = function(input) {
-
-			var output = input,
-				type = typeOf(input),
-				index, size;
-
-			if (type === 'array') {
-
-				output = [];
-				size = input.length;
-
-				for (index=0;index<size;++index)
-
-					output[index] = Public.clone(input[index]);
-
-			} else if (type === 'object') {
-
-				output = {};
-
-				for (index in input)
-
-					output[index] = Public.clone(input[index]);
-
-			}
-
-			return output;
-
-		};
-
-		/**
-		 * Merge two objects recursively
-		 * @param mixed input
-		 * @param mixed extend
-		 * @return mixed
-		 */
-
-		function merge_recursive(base, extend) {
-
-			if (typeOf(base) !== 'object')
-
-				return extend;
-
-			for (var key in extend) {
-
-				if (typeOf(base[key]) === 'object' && typeOf(extend[key]) === 'object') {
-
-					base[key] = merge_recursive(base[key], extend[key]);
-
-				} else {
-
-					base[key] = extend[key];
-
-				}
-
-			}
-
-			return base;
-
-		}
-
-		/**
-		 * Merge two or more objects
-		 * @param bool clone
-		 * @param bool recursive
-		 * @param array argv
-		 * @return object
-		 */
-
-		function merge(clone, recursive, argv) {
-
-			var result = argv[0],
-				size = argv.length;
-
-			if (clone || typeOf(result) !== 'object')
-
-				result = {};
-
-			for (var index=0;index<size;++index) {
-
-				var item = argv[index],
-
-					type = typeOf(item);
-
-				if (type !== 'object') continue;
-
-				for (var key in item) {
-
-					var sitem = clone ? Public.clone(item[key]) : item[key];
-
-					if (recursive) {
-
-						result[key] = merge_recursive(result[key], sitem);
-
-					} else {
-
-						result[key] = sitem;
-
-					}
-
-				}
-
-			}
-
-			return result;
-
-		}
-
-		/**
-		 * Get type of variable
-		 * @param mixed input
-		 * @return string
-		 *
-		 * @see http://jsperf.com/typeofvar
-		 */
-
-		function typeOf(input) {
-
-			return ({}).toString.call(input).slice(8, -1).toLowerCase();
-
-		}
-
-		if (isNode) {
-
-			module.exports = Public;
-
-		} else {
-
-			window[publicName] = Public;
-
-		}
-
-	})(typeof module === 'object' && module && typeof module.exports === 'object' && module.exports);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)(module)))
-
-/***/ },
-/* 142 */
+/* 138 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6217,19 +5565,19 @@ return webpackJsonpVoiceArt__name_([2],[
 	};
 
 /***/ },
-/* 143 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	__webpack_require__(144);
-	__webpack_require__(145);
+	__webpack_require__(140);
+	__webpack_require__(141);
 
 	var EventEmitter = __webpack_require__(10);
-	var inherits = __webpack_require__(147);
-	var Keycode = __webpack_require__(148);
+	var inherits = __webpack_require__(137);
+	var Keycode = __webpack_require__(143);
 	var merge = __webpack_require__(64);
-	var utils = __webpack_require__(149);
+	var utils = __webpack_require__(144);
 
 	var PREFIX = 'cl';
 	var SLIDER_CLASS = PREFIX + '-slider';
@@ -7311,7 +6659,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	module.exports = ClSlider;
 
 /***/ },
-/* 144 */
+/* 140 */
 /***/ function(module, exports) {
 
 	(function () {
@@ -7360,13 +6708,13 @@ return webpackJsonpVoiceArt__name_([2],[
 
 
 /***/ },
-/* 145 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(146);
+	var content = __webpack_require__(142);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(8)(content, {});
@@ -7386,7 +6734,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	}
 
 /***/ },
-/* 146 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(7)();
@@ -7400,36 +6748,7 @@ return webpackJsonpVoiceArt__name_([2],[
 
 
 /***/ },
-/* 147 */
-/***/ function(module, exports) {
-
-	if (typeof Object.create === 'function') {
-	  // implementation from standard node.js 'util' module
-	  module.exports = function inherits(ctor, superCtor) {
-	    ctor.super_ = superCtor
-	    ctor.prototype = Object.create(superCtor.prototype, {
-	      constructor: {
-	        value: ctor,
-	        enumerable: false,
-	        writable: true,
-	        configurable: true
-	      }
-	    });
-	  };
-	} else {
-	  // old school shim for old browsers
-	  module.exports = function inherits(ctor, superCtor) {
-	    ctor.super_ = superCtor
-	    var TempCtor = function () {}
-	    TempCtor.prototype = superCtor.prototype
-	    ctor.prototype = new TempCtor()
-	    ctor.prototype.constructor = ctor
-	  }
-	}
-
-
-/***/ },
-/* 148 */
+/* 143 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -7546,7 +6865,7 @@ return webpackJsonpVoiceArt__name_([2],[
 
 
 /***/ },
-/* 149 */
+/* 144 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7664,7 +6983,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	};
 
 /***/ },
-/* 150 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7696,7 +7015,7 @@ return webpackJsonpVoiceArt__name_([2],[
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	__webpack_require__(151);
+	__webpack_require__(146);
 
 	var _events = __webpack_require__(10);
 
@@ -8039,13 +7358,13 @@ return webpackJsonpVoiceArt__name_([2],[
 	;
 
 /***/ },
-/* 151 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(152);
+	var content = __webpack_require__(147);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(8)(content, {});
@@ -8065,7 +7384,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	}
 
 /***/ },
-/* 152 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(7)();
@@ -8073,61 +7392,61 @@ return webpackJsonpVoiceArt__name_([2],[
 
 
 	// module
-	exports.push([module.id, "/*\n Copyright 2016\n Pilyugin Alexey\n\n This file is part of Voice ART.\n\n Voice ART is free software: you can redistribute it and/or modify\n it under the terms of the GNU General Public License as published by\n the Free Software Foundation, either version 3 of the License, or\n (at your option) any later version.\n\n Voice ART is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of\n MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n GNU General Public License for more details.\n\n You should have received a copy of the GNU General Public License\n along with Voice ART.  If not, see <http://www.gnu.org/licenses/>.\n */\n.cg-voice-cp {\n  position: absolute;\n  top: 20px;\n  right: 20px;\n  z-index: 1000;\n  text-align: right;\n  overflow: hidden;\n}\n.cg-voice-cp .cg-voice-cp-buttons {\n  position: relative;\n  display: inline-block;\n  box-sizing: border-box;\n  width: 80px;\n  height: 80px;\n  padding: 20px;\n}\n.cg-voice-cp .cg-voice-cp-indicator-button {\n  position: relative;\n  z-index: 1;\n  width: 40px;\n  height: 40px;\n  border: none;\n  border-radius: 50%;\n  cursor: default;\n  background-color: #ff7c76;\n  background-repeat: no-repeat;\n  background-position: center;\n  transition: background-color 0.5s;\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:hover {\n  box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:active {\n  box-shadow: inset 0 0 5px 2px rgba(0, 0, 0, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:focus {\n  outline: none;\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:focus:not(.is-mouse-focused) {\n  box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:focus:after {\n  content: '';\n  display: block;\n  position: absolute;\n  top: 3px;\n  bottom: 3px;\n  left: 3px;\n  right: 3px;\n  border-radius: 50%;\n  border: 1px dotted #ffffff;\n}\n.cg-voice-cp .cg-voice-cp-indicator-button.is-mouse-focused:focus:after {\n  border: none;\n}\n.cg-voice-cp .cg-voice-cp-side-button {\n  position: absolute;\n  top: 40px;\n  left: 40px;\n  width: 40px;\n  height: 40px;\n  padding: 0;\n  border-bottom-right-radius: 100%;\n  border: 1px rgba(83, 180, 255, 0.3) solid;\n  background-color: rgba(83, 180, 255, 0.1);\n  -webkit-transform-origin: 0 0;\n  -moz-transform-origin: 0 0;\n  -o-transform-origin: 0 0;\n  -ms-transform-origin: 0 0;\n  transform-origin: 0 0;\n  transition: background-color 0.5s;\n}\n.cg-voice-cp .cg-voice-cp-side-button:after {\n  content: '';\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  position: absolute;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 45%;\n  opacity: 0.5;\n  transition: opacity 0.5s;\n}\n.cg-voice-cp .cg-voice-cp-side-button:hover:not(:disabled) {\n  cursor: pointer;\n  background-color: rgba(83, 180, 255, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-side-button:hover:not(:disabled):after {\n  opacity: 0.8;\n}\n.cg-voice-cp .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(83, 180, 255, 0.4);\n}\n.cg-voice-cp .cg-voice-cp-side-button:focus {\n  outline: none;\n}\n.cg-voice-cp .cg-voice-cp-side-button:focus:not(.is-mouse-focused) {\n  box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-side-button:disabled:after {\n  opacity: 0.3;\n}\n.cg-voice-cp .cg-voice-cp-side-button.right-side {\n  -moz-transform: rotate(-45deg);\n  -ms-transform: rotate(-45deg);\n  -webkit-transform: rotate(-45deg);\n  -o-transform: rotate(-45deg);\n  transform: rotate(-45deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.right-side:after {\n  -moz-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  -webkit-transform: rotate(45deg);\n  -o-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.bottom-side {\n  -moz-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  -webkit-transform: rotate(45deg);\n  -o-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.bottom-side:after {\n  -moz-transform: rotate(-45deg);\n  -ms-transform: rotate(-45deg);\n  -webkit-transform: rotate(-45deg);\n  -o-transform: rotate(-45deg);\n  transform: rotate(-45deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.left-side {\n  -moz-transform: rotate(135deg);\n  -ms-transform: rotate(135deg);\n  -webkit-transform: rotate(135deg);\n  -o-transform: rotate(135deg);\n  transform: rotate(135deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.left-side:after {\n  -moz-transform: rotate(-135deg);\n  -ms-transform: rotate(-135deg);\n  -webkit-transform: rotate(-135deg);\n  -o-transform: rotate(-135deg);\n  transform: rotate(-135deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.top-side {\n  -moz-transform: rotate(225deg);\n  -ms-transform: rotate(225deg);\n  -webkit-transform: rotate(225deg);\n  -o-transform: rotate(225deg);\n  transform: rotate(225deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.top-side:after {\n  -moz-transform: rotate(-225deg);\n  -ms-transform: rotate(-225deg);\n  -webkit-transform: rotate(-225deg);\n  -o-transform: rotate(-225deg);\n  transform: rotate(-225deg);\n}\n.cg-voice-cp .cg-voice-cp-power-button:after {\n  background-image: url(" + __webpack_require__(153) + ");\n}\n.cg-voice-cp .cg-voice-cp-help-button:after {\n  background-image: url(" + __webpack_require__(154) + ");\n}\n.cg-voice-cp .cg-voice-cp-settings-button:after {\n  background-image: url(" + __webpack_require__(155) + ");\n}\n.cg-voice-cp .cg-voice-cp-skip-button:after {\n  background-image: url(" + __webpack_require__(156) + ");\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-indicator-button {\n  cursor: pointer;\n  background-image: url(" + __webpack_require__(157) + ");\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-indicator-button:hover {\n  background-color: #ff4b43;\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-indicator-button:active {\n  background-color: #a90700;\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-side-button {\n  background-color: rgba(255, 124, 118, 0.1);\n  border-color: rgba(255, 124, 118, 0.3);\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-side-button:hover:not(:disabled) {\n  background-color: rgba(255, 124, 118, 0.2);\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(255, 124, 118, 0.4);\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-power-button:after {\n  display: none;\n}\n.cg-voice-cp[state=pending] .cg-voice-cp-indicator-button {\n  background-color: #B2DBFB;\n  background-image: url(" + __webpack_require__(158) + ");\n}\n.cg-voice-cp[state=pending] .cg-voice-cp-side-button {\n  background-color: rgba(178, 219, 251, 0.1);\n  border-color: rgba(178, 219, 251, 0.3);\n}\n.cg-voice-cp[state=pending] .cg-voice-cp-side-button:hover:not(:disabled) {\n  background-color: rgba(178, 219, 251, 0.2);\n}\n.cg-voice-cp[state=pending] .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(178, 219, 251, 0.4);\n}\n.cg-voice-cp[state=speaking] .cg-voice-cp-indicator-button {\n  background-color: #53b4ff;\n  background-image: url(" + __webpack_require__(159) + ");\n}\n.cg-voice-cp[state=speaking] .cg-voice-cp-side-button {\n  background-color: rgba(83, 180, 255, 0.1);\n  border-color: rgba(83, 180, 255, 0.3);\n}\n.cg-voice-cp[state=speaking] .cg-voice-cp-side-button:hover:not(:disabled) {\n  background-color: rgba(83, 180, 255, 0.2);\n}\n.cg-voice-cp[state=speaking] .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(83, 180, 255, 0.4);\n}\n.cg-voice-cp[state=listening] .cg-voice-cp-indicator-button {\n  background-color: #f64d4a;\n  background-image: url(" + __webpack_require__(160) + ");\n}\n.cg-voice-cp[state=listening] .cg-voice-cp-side-button {\n  background-color: rgba(246, 77, 74, 0.1);\n  border-color: rgba(246, 77, 74, 0.3);\n}\n.cg-voice-cp[state=listening] .cg-voice-cp-side-button:hover:not(:disabled) {\n  background-color: rgba(246, 77, 74, 0.2);\n}\n.cg-voice-cp[state=listening] .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(246, 77, 74, 0.4);\n}\n.cg-voice-cp[active=active] .cg-voice-cp-indicator-button {\n  animation: growing 1s linear infinite alternate;\n}\n.cg-voice-cp[active=active][state=speaking] .cg-voice-cp-indicator-button {\n  animation: growing-speaking 1s linear infinite alternate;\n}\n.cg-voice-cp[active=active][state=listening] .cg-voice-cp-indicator-button {\n  animation: growing-listening 1s linear infinite alternate;\n}\n.cg-voice-cp .cg-voice-cp-messages {\n  top: calc(100% + 20px);\n  margin-top: 20px;\n  right: 0;\n  width: 300px;\n}\n.cg-voice-cp .cg-voice-cp-messages.cg-voice-cp-hidden {\n  display: none;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification {\n  transition: opacity 3s;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification:not(:last-child) {\n  margin-right: 5px;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification[type=error] {\n  animation: notification-glowing-error 0.7s cubic-bezier(0.25, 2, 0.75, 2) both;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification[type=answer] {\n  animation: notification-glowing-answer 0.7s cubic-bezier(0.25, 2, 0.75, 2) both;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification[type=command] {\n  animation: notification-glowing-command 0.7s cubic-bezier(0.25, 2, 0.75, 2) both;\n}\n@-moz-keyframes growing {\n  0% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 20px;\n  }\n}\n@-webkit-keyframes growing {\n  0% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 20px;\n  }\n}\n@keyframes growing {\n  0% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 20px;\n  }\n}\n@-moz-keyframes growing-speaking {\n  0% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 20px;\n  }\n}\n@-webkit-keyframes growing-speaking {\n  0% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 20px;\n  }\n}\n@keyframes growing-speaking {\n  0% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 20px;\n  }\n}\n@-moz-keyframes growing-listening {\n  0% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 20px;\n  }\n}\n@-webkit-keyframes growing-listening {\n  0% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 20px;\n  }\n}\n@keyframes growing-listening {\n  0% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 20px;\n  }\n}\n@-moz-keyframes notification-glowing-answer {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #006700;\n    text-shadow: green 0 0 2px;\n  }\n}\n@-webkit-keyframes notification-glowing-answer {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #006700;\n    text-shadow: green 0 0 2px;\n  }\n}\n@keyframes notification-glowing-answer {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #006700;\n    text-shadow: green 0 0 2px;\n  }\n}\n@-moz-keyframes notification-glowing-command {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@-webkit-keyframes notification-glowing-command {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@keyframes notification-glowing-command {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@-moz-keyframes notification-glowing-error {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@-webkit-keyframes notification-glowing-error {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@keyframes notification-glowing-error {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@-moz-keyframes notification-fadeout {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@-webkit-keyframes notification-fadeout {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes notification-fadeout {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n", ""]);
+	exports.push([module.id, "/*\n Copyright 2016\n Pilyugin Alexey\n\n This file is part of Voice ART.\n\n Voice ART is free software: you can redistribute it and/or modify\n it under the terms of the GNU General Public License as published by\n the Free Software Foundation, either version 3 of the License, or\n (at your option) any later version.\n\n Voice ART is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of\n MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n GNU General Public License for more details.\n\n You should have received a copy of the GNU General Public License\n along with Voice ART.  If not, see <http://www.gnu.org/licenses/>.\n */\n.cg-voice-cp {\n  position: absolute;\n  top: 20px;\n  right: 20px;\n  z-index: 1000;\n  text-align: right;\n  overflow: hidden;\n}\n.cg-voice-cp .cg-voice-cp-buttons {\n  position: relative;\n  display: inline-block;\n  box-sizing: border-box;\n  width: 80px;\n  height: 80px;\n  padding: 20px;\n}\n.cg-voice-cp .cg-voice-cp-indicator-button {\n  position: relative;\n  z-index: 1;\n  width: 40px;\n  height: 40px;\n  border: none;\n  border-radius: 50%;\n  cursor: default;\n  background-color: #ff7c76;\n  background-repeat: no-repeat;\n  background-position: center;\n  transition: background-color 0.5s;\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:hover {\n  box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:active {\n  box-shadow: inset 0 0 5px 2px rgba(0, 0, 0, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:focus {\n  outline: none;\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:focus:not(.is-mouse-focused) {\n  box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-indicator-button:focus:after {\n  content: '';\n  display: block;\n  position: absolute;\n  top: 3px;\n  bottom: 3px;\n  left: 3px;\n  right: 3px;\n  border-radius: 50%;\n  border: 1px dotted #ffffff;\n}\n.cg-voice-cp .cg-voice-cp-indicator-button.is-mouse-focused:focus:after {\n  border: none;\n}\n.cg-voice-cp .cg-voice-cp-side-button {\n  position: absolute;\n  top: 40px;\n  left: 40px;\n  width: 40px;\n  height: 40px;\n  padding: 0;\n  border-bottom-right-radius: 100%;\n  border: 1px rgba(83, 180, 255, 0.3) solid;\n  background-color: rgba(83, 180, 255, 0.1);\n  -webkit-transform-origin: 0 0;\n  -moz-transform-origin: 0 0;\n  -o-transform-origin: 0 0;\n  -ms-transform-origin: 0 0;\n  transform-origin: 0 0;\n  transition: background-color 0.5s;\n}\n.cg-voice-cp .cg-voice-cp-side-button:after {\n  content: '';\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  position: absolute;\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: 45%;\n  opacity: 0.5;\n  transition: opacity 0.5s;\n}\n.cg-voice-cp .cg-voice-cp-side-button:hover:not(:disabled) {\n  cursor: pointer;\n  background-color: rgba(83, 180, 255, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-side-button:hover:not(:disabled):after {\n  opacity: 0.8;\n}\n.cg-voice-cp .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(83, 180, 255, 0.4);\n}\n.cg-voice-cp .cg-voice-cp-side-button:focus {\n  outline: none;\n}\n.cg-voice-cp .cg-voice-cp-side-button:focus:not(.is-mouse-focused) {\n  box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);\n}\n.cg-voice-cp .cg-voice-cp-side-button:disabled:after {\n  opacity: 0.3;\n}\n.cg-voice-cp .cg-voice-cp-side-button.right-side {\n  -moz-transform: rotate(-45deg);\n  -ms-transform: rotate(-45deg);\n  -webkit-transform: rotate(-45deg);\n  -o-transform: rotate(-45deg);\n  transform: rotate(-45deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.right-side:after {\n  -moz-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  -webkit-transform: rotate(45deg);\n  -o-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.bottom-side {\n  -moz-transform: rotate(45deg);\n  -ms-transform: rotate(45deg);\n  -webkit-transform: rotate(45deg);\n  -o-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.bottom-side:after {\n  -moz-transform: rotate(-45deg);\n  -ms-transform: rotate(-45deg);\n  -webkit-transform: rotate(-45deg);\n  -o-transform: rotate(-45deg);\n  transform: rotate(-45deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.left-side {\n  -moz-transform: rotate(135deg);\n  -ms-transform: rotate(135deg);\n  -webkit-transform: rotate(135deg);\n  -o-transform: rotate(135deg);\n  transform: rotate(135deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.left-side:after {\n  -moz-transform: rotate(-135deg);\n  -ms-transform: rotate(-135deg);\n  -webkit-transform: rotate(-135deg);\n  -o-transform: rotate(-135deg);\n  transform: rotate(-135deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.top-side {\n  -moz-transform: rotate(225deg);\n  -ms-transform: rotate(225deg);\n  -webkit-transform: rotate(225deg);\n  -o-transform: rotate(225deg);\n  transform: rotate(225deg);\n}\n.cg-voice-cp .cg-voice-cp-side-button.top-side:after {\n  -moz-transform: rotate(-225deg);\n  -ms-transform: rotate(-225deg);\n  -webkit-transform: rotate(-225deg);\n  -o-transform: rotate(-225deg);\n  transform: rotate(-225deg);\n}\n.cg-voice-cp .cg-voice-cp-power-button:after {\n  background-image: url(" + __webpack_require__(148) + ");\n}\n.cg-voice-cp .cg-voice-cp-help-button:after {\n  background-image: url(" + __webpack_require__(149) + ");\n}\n.cg-voice-cp .cg-voice-cp-settings-button:after {\n  background-image: url(" + __webpack_require__(150) + ");\n}\n.cg-voice-cp .cg-voice-cp-skip-button:after {\n  background-image: url(" + __webpack_require__(151) + ");\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-indicator-button {\n  cursor: pointer;\n  background-image: url(" + __webpack_require__(152) + ");\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-indicator-button:hover {\n  background-color: #ff4b43;\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-indicator-button:active {\n  background-color: #a90700;\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-side-button {\n  background-color: rgba(255, 124, 118, 0.1);\n  border-color: rgba(255, 124, 118, 0.3);\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-side-button:hover:not(:disabled) {\n  background-color: rgba(255, 124, 118, 0.2);\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(255, 124, 118, 0.4);\n}\n.cg-voice-cp[state=quiescence] .cg-voice-cp-power-button:after {\n  display: none;\n}\n.cg-voice-cp[state=pending] .cg-voice-cp-indicator-button {\n  background-color: #B2DBFB;\n  background-image: url(" + __webpack_require__(153) + ");\n}\n.cg-voice-cp[state=pending] .cg-voice-cp-side-button {\n  background-color: rgba(178, 219, 251, 0.1);\n  border-color: rgba(178, 219, 251, 0.3);\n}\n.cg-voice-cp[state=pending] .cg-voice-cp-side-button:hover:not(:disabled) {\n  background-color: rgba(178, 219, 251, 0.2);\n}\n.cg-voice-cp[state=pending] .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(178, 219, 251, 0.4);\n}\n.cg-voice-cp[state=speaking] .cg-voice-cp-indicator-button {\n  background-color: #53b4ff;\n  background-image: url(" + __webpack_require__(154) + ");\n}\n.cg-voice-cp[state=speaking] .cg-voice-cp-side-button {\n  background-color: rgba(83, 180, 255, 0.1);\n  border-color: rgba(83, 180, 255, 0.3);\n}\n.cg-voice-cp[state=speaking] .cg-voice-cp-side-button:hover:not(:disabled) {\n  background-color: rgba(83, 180, 255, 0.2);\n}\n.cg-voice-cp[state=speaking] .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(83, 180, 255, 0.4);\n}\n.cg-voice-cp[state=listening] .cg-voice-cp-indicator-button {\n  background-color: #f64d4a;\n  background-image: url(" + __webpack_require__(155) + ");\n}\n.cg-voice-cp[state=listening] .cg-voice-cp-side-button {\n  background-color: rgba(246, 77, 74, 0.1);\n  border-color: rgba(246, 77, 74, 0.3);\n}\n.cg-voice-cp[state=listening] .cg-voice-cp-side-button:hover:not(:disabled) {\n  background-color: rgba(246, 77, 74, 0.2);\n}\n.cg-voice-cp[state=listening] .cg-voice-cp-side-button:active:not(:disabled) {\n  background-color: rgba(246, 77, 74, 0.4);\n}\n.cg-voice-cp[active=active] .cg-voice-cp-indicator-button {\n  animation: growing 1s linear infinite alternate;\n}\n.cg-voice-cp[active=active][state=speaking] .cg-voice-cp-indicator-button {\n  animation: growing-speaking 1s linear infinite alternate;\n}\n.cg-voice-cp[active=active][state=listening] .cg-voice-cp-indicator-button {\n  animation: growing-listening 1s linear infinite alternate;\n}\n.cg-voice-cp .cg-voice-cp-messages {\n  top: calc(100% + 20px);\n  margin-top: 20px;\n  right: 0;\n  width: 300px;\n}\n.cg-voice-cp .cg-voice-cp-messages.cg-voice-cp-hidden {\n  display: none;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification {\n  transition: opacity 3s;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification:not(:last-child) {\n  margin-right: 5px;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification[type=error] {\n  animation: notification-glowing-error 0.7s cubic-bezier(0.25, 2, 0.75, 2) both;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification[type=answer] {\n  animation: notification-glowing-answer 0.7s cubic-bezier(0.25, 2, 0.75, 2) both;\n}\n.cg-voice-cp .cg-voice-cp-messages .cg-voice-cp-notification[type=command] {\n  animation: notification-glowing-command 0.7s cubic-bezier(0.25, 2, 0.75, 2) both;\n}\n@-moz-keyframes growing {\n  0% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 20px;\n  }\n}\n@-webkit-keyframes growing {\n  0% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 20px;\n  }\n}\n@keyframes growing {\n  0% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(255, 124, 118, 0.3) 0 0 0 20px;\n  }\n}\n@-moz-keyframes growing-speaking {\n  0% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 20px;\n  }\n}\n@-webkit-keyframes growing-speaking {\n  0% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 20px;\n  }\n}\n@keyframes growing-speaking {\n  0% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(83, 180, 255, 0.3) 0 0 0 20px;\n  }\n}\n@-moz-keyframes growing-listening {\n  0% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 20px;\n  }\n}\n@-webkit-keyframes growing-listening {\n  0% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 20px;\n  }\n}\n@keyframes growing-listening {\n  0% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 0;\n  }\n  100% {\n    box-shadow: rgba(246, 77, 74, 0.3) 0 0 0 20px;\n  }\n}\n@-moz-keyframes notification-glowing-answer {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #006700;\n    text-shadow: green 0 0 2px;\n  }\n}\n@-webkit-keyframes notification-glowing-answer {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #006700;\n    text-shadow: green 0 0 2px;\n  }\n}\n@keyframes notification-glowing-answer {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #006700;\n    text-shadow: green 0 0 2px;\n  }\n}\n@-moz-keyframes notification-glowing-command {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@-webkit-keyframes notification-glowing-command {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@keyframes notification-glowing-command {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@-moz-keyframes notification-glowing-error {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@-webkit-keyframes notification-glowing-error {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@keyframes notification-glowing-error {\n  0% {\n    color: inherit;\n    text-shadow: inherit;\n  }\n  100% {\n    color: #e60000;\n    text-shadow: red 0 0 2px;\n  }\n}\n@-moz-keyframes notification-fadeout {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@-webkit-keyframes notification-fadeout {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n@keyframes notification-fadeout {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n  }\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 153 */
+/* 148 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0icmVkIiBkPSJNMTYuNTYsNS40NEwxNS4xMSw2Ljg5QzE2Ljg0LDcuOTQgMTgsOS44MyAxOCwxMkE2LDYgMCAwLDEgMTIsMThBNiw2IDAgMCwxIDYsMTJDNiw5LjgzIDcuMTYsNy45NCA4Ljg4LDYuODhMNy40NCw1LjQ0QzUuMzYsNi44OCA0LDkuMjggNCwxMkE4LDggMCAwLDAgMTIsMjBBOCw4IDAgMCwwIDIwLDEyQzIwLDkuMjggMTguNjQsNi44OCAxNi41Niw1LjQ0TTEzLDNIMTFWMTNIMTMiIC8+PC9zdmc+"
 
 /***/ },
-/* 154 */
+/* 149 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEwLDE5SDEzVjIySDEwVjE5TTEyLDJDMTcuMzUsMi4yMiAxOS42OCw3LjYyIDE2LjUsMTEuNjdDMTUuNjcsMTIuNjcgMTQuMzMsMTMuMzMgMTMuNjcsMTQuMTdDMTMsMTUgMTMsMTYgMTMsMTdIMTBDMTAsMTUuMzMgMTAsMTMuOTIgMTAuNjcsMTIuOTJDMTEuMzMsMTEuOTIgMTIuNjcsMTEuMzMgMTMuNSwxMC42N0MxNS45Miw4LjQzIDE1LjMyLDUuMjYgMTIsNUEzLDMgMCAwLDAgOSw4SDZBNiw2IDAgMCwxIDEyLDJaIiAvPjwvc3ZnPg=="
 
 /***/ },
-/* 155 */
+/* 150 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyLDE1LjVBMy41LDMuNSAwIDAsMSA4LjUsMTJBMy41LDMuNSAwIDAsMSAxMiw4LjVBMy41LDMuNSAwIDAsMSAxNS41LDEyQTMuNSwzLjUgMCAwLDEgMTIsMTUuNU0xOS40MywxMi45N0MxOS40NywxMi42NSAxOS41LDEyLjMzIDE5LjUsMTJDMTkuNSwxMS42NyAxOS40NywxMS4zNCAxOS40MywxMUwyMS41NCw5LjM3QzIxLjczLDkuMjIgMjEuNzgsOC45NSAyMS42Niw4LjczTDE5LjY2LDUuMjdDMTkuNTQsNS4wNSAxOS4yNyw0Ljk2IDE5LjA1LDUuMDVMMTYuNTYsNi4wNUMxNi4wNCw1LjY2IDE1LjUsNS4zMiAxNC44Nyw1LjA3TDE0LjUsMi40MkMxNC40NiwyLjE4IDE0LjI1LDIgMTQsMkgxMEM5Ljc1LDIgOS41NCwyLjE4IDkuNSwyLjQyTDkuMTMsNS4wN0M4LjUsNS4zMiA3Ljk2LDUuNjYgNy40NCw2LjA1TDQuOTUsNS4wNUM0LjczLDQuOTYgNC40Niw1LjA1IDQuMzQsNS4yN0wyLjM0LDguNzNDMi4yMSw4Ljk1IDIuMjcsOS4yMiAyLjQ2LDkuMzdMNC41NywxMUM0LjUzLDExLjM0IDQuNSwxMS42NyA0LjUsMTJDNC41LDEyLjMzIDQuNTMsMTIuNjUgNC41NywxMi45N0wyLjQ2LDE0LjYzQzIuMjcsMTQuNzggMi4yMSwxNS4wNSAyLjM0LDE1LjI3TDQuMzQsMTguNzNDNC40NiwxOC45NSA0LjczLDE5LjAzIDQuOTUsMTguOTVMNy40NCwxNy45NEM3Ljk2LDE4LjM0IDguNSwxOC42OCA5LjEzLDE4LjkzTDkuNSwyMS41OEM5LjU0LDIxLjgyIDkuNzUsMjIgMTAsMjJIMTRDMTQuMjUsMjIgMTQuNDYsMjEuODIgMTQuNSwyMS41OEwxNC44NywxOC45M0MxNS41LDE4LjY3IDE2LjA0LDE4LjM0IDE2LjU2LDE3Ljk0TDE5LjA1LDE4Ljk1QzE5LjI3LDE5LjAzIDE5LjU0LDE4Ljk1IDE5LjY2LDE4LjczTDIxLjY2LDE1LjI3QzIxLjc4LDE1LjA1IDIxLjczLDE0Ljc4IDIxLjU0LDE0LjYzTDE5LjQzLDEyLjk3WiIgLz48L3N2Zz4="
 
 /***/ },
-/* 156 */
+/* 151 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTQsNVYxOUwxMSwxMk0xOCw1VjE5SDIwVjVNMTEsNVYxOUwxOCwxMiIgLz48L3N2Zz4="
 
 /***/ },
-/* 157 */
+/* 152 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xNi41Niw1LjQ0TDE1LjExLDYuODlDMTYuODQsNy45NCAxOCw5LjgzIDE4LDEyQTYsNiAwIDAsMSAxMiwxOEE2LDYgMCAwLDEgNiwxMkM2LDkuODMgNy4xNiw3Ljk0IDguODgsNi44OEw3LjQ0LDUuNDRDNS4zNiw2Ljg4IDQsOS4yOCA0LDEyQTgsOCAwIDAsMCAxMiwyMEE4LDggMCAwLDAgMjAsMTJDMjAsOS4yOCAxOC42NCw2Ljg4IDE2LjU2LDUuNDRNMTMsM0gxMVYxM0gxMyIgLz48L3N2Zz4="
 
 /***/ },
-/* 158 */
+/* 153 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xNiwxMkEyLDIgMCAwLDEgMTgsMTBBMiwyIDAgMCwxIDIwLDEyQTIsMiAwIDAsMSAxOCwxNEEyLDIgMCAwLDEgMTYsMTJNMTAsMTJBMiwyIDAgMCwxIDEyLDEwQTIsMiAwIDAsMSAxNCwxMkEyLDIgMCAwLDEgMTIsMTRBMiwyIDAgMCwxIDEwLDEyTTQsMTJBMiwyIDAgMCwxIDYsMTBBMiwyIDAgMCwxIDgsMTJBMiwyIDAgMCwxIDYsMTRBMiwyIDAgMCwxIDQsMTJaIiAvPjwvc3ZnPg=="
 
 /***/ },
-/* 159 */
+/* 154 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xNCwzLjIzVjUuMjlDMTYuODksNi4xNSAxOSw4LjgzIDE5LDEyQzE5LDE1LjE3IDE2Ljg5LDE3Ljg0IDE0LDE4LjdWMjAuNzdDMTgsMTkuODYgMjEsMTYuMjggMjEsMTJDMjEsNy43MiAxOCw0LjE0IDE0LDMuMjNNMTYuNSwxMkMxNi41LDEwLjIzIDE1LjUsOC43MSAxNCw3Ljk3VjE2QzE1LjUsMTUuMjkgMTYuNSwxMy43NiAxNi41LDEyTTMsOVYxNUg3TDEyLDIwVjRMNyw5SDNaIiAvPjwvc3ZnPg=="
 
 /***/ },
-/* 160 */
+/* 155 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiwyQTMsMyAwIDAsMSAxNSw1VjExQTMsMyAwIDAsMSAxMiwxNEEzLDMgMCAwLDEgOSwxMVY1QTMsMyAwIDAsMSAxMiwyTTE5LDExQzE5LDE0LjUzIDE2LjM5LDE3LjQ0IDEzLDE3LjkzVjIxSDExVjE3LjkzQzcuNjEsMTcuNDQgNSwxNC41MyA1LDExSDdBNSw1IDAgMCwwIDEyLDE2QTUsNSAwIDAsMCAxNywxMUgxOVoiIC8+PC9zdmc+"
 
 /***/ },
-/* 161 */
+/* 156 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8655,15 +7974,15 @@ return webpackJsonpVoiceArt__name_([2],[
 	module.exports = Simulator;
 
 /***/ },
-/* 162 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./cg-item.js": 163,
-		"./common-item.js": 164,
-		"./cxp-item.js": 165,
-		"./dc-item.js": 166,
-		"./dc-survey-item.js": 167
+		"./cg-item.js": 158,
+		"./common-item.js": 159,
+		"./cxp-item.js": 160,
+		"./dc-item.js": 161,
+		"./dc-survey-item.js": 162
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8676,11 +7995,11 @@ return webpackJsonpVoiceArt__name_([2],[
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 162;
+	webpackContext.id = 157;
 
 
 /***/ },
-/* 163 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -8854,7 +8173,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 164 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -9196,7 +8515,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 165 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -9583,7 +8902,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 166 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -9933,7 +9252,7 @@ return webpackJsonpVoiceArt__name_([2],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 167 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
