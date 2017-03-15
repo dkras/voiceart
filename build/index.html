@@ -19,7 +19,6 @@
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/ItemRenderer.js"></script>
     <script type="text/javascript" src="js/VoiceController.js"></script>
-    <script type="text/javascript" src="js/VoiceCommander.js"></script>
 
 </head>
 <body>
@@ -55,45 +54,6 @@
         var MODE = 'cg-item-editor-mode';
 
         var voiceController;
-        /*window.vc = new VoiceArt['voice-commander']({
-            customCommands: ['Vicki menu', 'Vicki next question', 'Vicki stop'],
-            alternatives: [
-                {
-                    phrase: 'Vicki',
-                    alts: [
-                        'vk',
-                        'viki',
-                        'freaky',
-                        'video',
-                        'wiki',
-                        'vicky',
-                        'vicki',
-                        'ricky',
-                        'ricki',
-                        'rikki',
-                        'avicii',
-                        'nikki',
-                        'nicki',
-                        'we can',
-                        'they can',
-                        'richard'
-                    ]
-                },
-                {
-                    phrase: 'stop',
-                    alts: [
-                        'stuff',
-                        'dot'
-                    ]
-                }
-            ]
-        });
-        window.vc.on('command', function(cmd){
-            console.log(cmd);
-            if(cmd === 'stop'){
-                window.vc.stop();
-            }
-        });*/
         var $sampleSelect = $('#sample-select');
         var $showEditor = $('#show-editor');
         var $splitPane = $('.split-pane');

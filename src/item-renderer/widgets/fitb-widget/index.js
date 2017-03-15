@@ -61,7 +61,7 @@ export default class FitbWidget extends AbstractWidget {
             }).appendTo(this.$domElement);
             var MQ = MathQuill.getInterface(2); // for backcompat
             this.$field = MQ.MathField($field[0], ('mathquill' in this.config)? this.config.mathquill : {});
-            if(this.isTouchDevice)
+            if(this.isTouchDevice())
                 this.$field.el().querySelector('textarea').setAttribute('readonly', true);
             //this.$field.palette({notEditable: false, config: {skin: 'black-small', hidden: (('palette' in this.config) && !this.config.palette)}});
         }

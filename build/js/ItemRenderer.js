@@ -17335,7 +17335,7 @@ return webpackJsonpVoiceArt__name_([0],[
 	            }).appendTo(_this.$domElement);
 	            var MQ = MathQuill.getInterface(2); // for backcompat
 	            _this.$field = MQ.MathField($field[0], 'mathquill' in _this.config ? _this.config.mathquill : {});
-	            if (_this.isTouchDevice) _this.$field.el().querySelector('textarea').setAttribute('readonly', true);
+	            if (_this.isTouchDevice()) _this.$field.el().querySelector('textarea').setAttribute('readonly', true);
 	            //this.$field.palette({notEditable: false, config: {skin: 'black-small', hidden: (('palette' in this.config) && !this.config.palette)}});
 	        }
 	        return _this;
