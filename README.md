@@ -20,7 +20,7 @@ Installation
 -------
 Install the voice-art module as dependency in your project via npm:
 ```sh
-npm install git+https://github.com/competentum/voice-art.git
+npm install git+https://github.com/dkras/voice-art.git
 ```
 or download voice-art lib files from [github](https://github.com/competentum/voice-art)
 
@@ -146,14 +146,8 @@ $.getJSON('samples/demo-pack/mc-checkbox.json', function(config){
 License
 -------
 
-##### Competentum Commercial License 
-Competentum provides its VoiceART product under a dual license model designed to meet the development and distribution needs of both commercial and open source projects.
-
-##### For Distributors of Commercial Applications:
-Organizations that develop and/or distribute commercially licensed software with VoiceART software and do not wish to distribute the source code for the commercially licensed software under version 3 of the GNU General Public License (the "GPL") must enter into a commercial license agreement with Competentum.
-
 ##### For Open Source Projects and Other Developers of Open Source Applications:
-For developers of applications under the GPL that want to combine and distribute those applications with VoiceART software, Competentum’s VoiceART open source software licensed under the GPL is the best option.
+Developers of applications under the GPL that want to combine and distribute those applications with VoiceART software, should use VoiceART open source software licensed under the GPL.
 
 We encourage VoiceART users to learn about the license by [reading the license](https://www.gnu.org/licenses/gpl-3.0.html) and [frequently asked questions](https://www.gnu.org/licenses/gpl-faq.html) provided by the Free Software Foundation.
 
